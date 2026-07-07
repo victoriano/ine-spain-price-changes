@@ -14,6 +14,14 @@ Recreación para España del gráfico de cambios acumulados de precios de bienes
 
 Este segundo gráfico divide cada serie de precios por el coste salarial por hora. Por encima de `0%`, la partida exige más salario-hora que en el año base; por debajo de `0%`, exige menos.
 
+## Originales de referencia
+
+Estos son los dos gráficos estadounidenses originales usados como inspiración visual y metodológica.
+
+![Original US price changes chart](references/originals/price-changes-us-original.png)
+
+![Original American dream affordability chart](references/originals/american-dream-broken-original.png)
+
 ## Qué incluye
 
 - `outputs/ine-price-changes-spain/ine_spain_price_changes.png`: gráfico final en PNG.
@@ -26,6 +34,8 @@ Este segundo gráfico divide cada serie de precios por el coste salarial por hor
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages_series.csv`: series de asequibilidad usadas para dibujar.
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages_summary.csv`: resumen final de asequibilidad por partida.
 - `outputs/ine-price-changes-spain/affordability_summary.json`: el mismo resumen de asequibilidad en JSON.
+- `references/originals/price-changes-us-original.png`: gráfico estadounidense original de cambios de precios.
+- `references/originals/american-dream-broken-original.png`: gráfico estadounidense original de asequibilidad ajustada por salarios.
 - `scripts/data_viz/ine_price_changes_spain.py`: script reproducible que descarga los datos del INE y regenera los archivos.
 
 ## Metodología
