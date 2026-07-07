@@ -1,6 +1,6 @@
 # Cambios de precios en España
 
-Recreación para España del gráfico de cambios acumulados de precios de bienes y servicios, usando datos oficiales del INE.
+Recreación para España del gráfico de cambios acumulados de precios de bienes y servicios, usando medias anuales de datos oficiales del INE.
 
 ![Cambios de precios en España](outputs/ine-price-changes-spain/ine_spain_price_changes.png)
 
@@ -8,16 +8,16 @@ Recreación para España del gráfico de cambios acumulados de precios de bienes
 
 - `outputs/ine-price-changes-spain/ine_spain_price_changes.png`: gráfico final en PNG.
 - `outputs/ine-price-changes-spain/ine_spain_price_changes.svg`: versión vectorial.
-- `outputs/ine-price-changes-spain/ine_spain_price_changes_series.csv`: series normalizadas usadas para dibujar.
+- `outputs/ine-price-changes-spain/ine_spain_price_changes_series.csv`: series anuales normalizadas usadas para dibujar.
 - `outputs/ine-price-changes-spain/ine_spain_price_changes_summary.csv`: tabla resumen con el cambio acumulado final.
 - `outputs/ine-price-changes-spain/summary.json`: el mismo resumen en JSON.
 - `scripts/data_viz/ine_price_changes_spain.py`: script reproducible que descarga los datos del INE y regenera los archivos.
 
 ## Metodología
 
-El periodo principal es `2002M01-2025M12`, porque las series detalladas actuales del IPC del INE empiezan en enero de 2002. La variación de cada línea se calcula contra el primer dato disponible de esa serie dentro del periodo.
+El periodo principal es `2002-2025`. Cada punto del gráfico es la media anual de la serie mensual o trimestral correspondiente. Uso medias anuales para evitar que partidas muy estacionales, como vestido y calzado, introduzcan dientes de sierra mensuales.
 
-La línea negra es el IPC general acumulado desde `2002M01` hasta `2025M12`. El coste salarial por hora procede de la ETCL y es trimestral (`2002T1-2025T4`). La serie de servicios móviles empieza en `2017M01`, porque no está disponible con la subclase actual desde 2002.
+La variación de cada línea se calcula contra la primera media anual disponible dentro del periodo. La línea negra es el IPC general acumulado desde la media anual de `2002` hasta la media anual de `2025`. El coste salarial por hora procede de la ETCL y se agrega desde datos trimestrales. La serie de servicios móviles empieza en `2017`, porque no está disponible con la subclase actual desde 2002.
 
 Algunas categorías son equivalentes aproximados de las del gráfico estadounidense original:
 

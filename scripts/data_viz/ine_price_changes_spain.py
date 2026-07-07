@@ -46,8 +46,10 @@ subprocess.check_output = _REAL_CHECK_OUTPUT
 
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "outputs" / "ine-price-changes-spain"
-START_PERIOD = "2002M01"
-END_PERIOD = "2025M12"
+START_YEAR = 2002
+END_YEAR = 2025
+START_MONTH_PERIOD = "2002M01"
+END_MONTH_PERIOD = "2025M12"
 
 
 @dataclass(frozen=True)
@@ -140,7 +142,7 @@ CPI_SERIES = [
         "Subclases ECOICOP ver.2",
         "08.3.2.0 Servicios de comunicación móvil",
         "Subclase",
-        "Disponible desde 2017M01; porcentaje acumulado desde esa fecha.",
+        "Disponible desde 2017; porcentaje acumulado desde esa media anual.",
     ),
     CpiSeries(
         "Juguetes",
@@ -204,12 +206,38 @@ def quarter_to_date(period: str) -> date:
     return date(int(year), month, 1)
 
 
+def average_points_by_year(points: list[dict[str, object]]) -> list[dict[str, object]]:
+    by_year: dict[int, list[dict[str, object]]] = {}
+    for point in points:
+        by_year.setdefault(point["date"].year, []).append(point)
+
+    annual_points = []
+    for year in sorted(by_year):
+        year_points = by_year[year]
+        first = year_points[0]
+        values = [float(point["value"]) for point in year_points]
+        annual_points.append(
+            {
+                "date": date(year, 1, 1),
+                "period": str(year),
+                "value": sum(values) / len(values),
+                "series": first["series"],
+                "source_table": first["source_table"],
+                "source_level": first["source_level"],
+                "ine_category": first["ine_category"],
+                "note": first.get("note", ""),
+                "observations": len(values),
+            }
+        )
+    return annual_points
+
+
 def load_cpi_series(defn: CpiSeries, cache: dict[int, list[dict[str, str]]]) -> list[dict[str, object]]:
     rows = cache.setdefault(defn.table_id, read_ine_table(defn.table_id))
     points = []
     for row in rows:
         period = row.get("Periodo", "")
-        if period < START_PERIOD or period > END_PERIOD:
+        if period < START_MONTH_PERIOD or period > END_MONTH_PERIOD:
             continue
         if row.get(defn.category_column) != defn.category:
             continue
@@ -233,8 +261,9 @@ def load_cpi_series(defn: CpiSeries, cache: dict[int, list[dict[str, str]]]) -> 
     points.sort(key=lambda item: item["date"])
     if not points:
         raise RuntimeError(f"No data found for {defn.label}: {defn.category}")
-    add_percent_change(points)
-    return points
+    annual_points = average_points_by_year(points)
+    add_percent_change(annual_points)
+    return annual_points
 
 
 def load_wage_series(cache: dict[int, list[dict[str, str]]]) -> list[dict[str, object]]:
@@ -263,14 +292,15 @@ def load_wage_series(cache: dict[int, list[dict[str, str]]]) -> list[dict[str, o
                 "source_table": table_id,
                 "source_level": "ETCL",
                 "ine_category": "Coste salarial total por hora, ajustado de estacionalidad y calendario",
-                "note": "Serie trimestral; porcentaje acumulado 2002T1-2025T4.",
+                "note": "Serie trimestral agregada a media anual; porcentaje acumulado 2002-2025.",
             }
         )
     points.sort(key=lambda item: item["date"])
     if not points:
         raise RuntimeError("No wage data found")
-    add_percent_change(points)
-    return points
+    annual_points = average_points_by_year(points)
+    add_percent_change(annual_points)
+    return annual_points
 
 
 def add_percent_change(points: list[dict[str, object]]) -> None:
@@ -292,6 +322,7 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
         "source_level",
         "ine_category",
         "note",
+        "observations",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
@@ -374,8 +405,7 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
     ax.set_facecolor("white")
 
     overall_pct = float(series_points["IPC general"][-1]["pct_change"])
-    x_start = date(2002, 1, 1)
-    x_end = date(2025, 12, 1)
+    x_start = date(START_YEAR, 1, 1)
     x_label = date(2026, 6, 1)
     x_right = date(2030, 1, 1)
 
@@ -406,8 +436,9 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
     ax.set_xlim(x_start, x_right)
     ax.set_yticks([-100, -50, 0, 50, 100])
     ax.set_yticklabels([f"{tick}%" for tick in [-100, -50, 0, 50, 100]], fontsize=13)
-    ax.set_xticks([date(2002, 1, 1), date(2012, 1, 1), date(2025, 1, 1)])
-    ax.set_xticklabels(["2002", "2012", "2025"], fontsize=15)
+    x_tick_years = [2002, 2007, 2012, 2017, 2022, 2025]
+    ax.set_xticks([date(year, 1, 1) for year in x_tick_years])
+    ax.set_xticklabels([str(year) for year in x_tick_years], fontsize=13)
     ax.tick_params(axis="x", length=7, width=1.0)
     ax.tick_params(axis="y", length=0)
 
@@ -441,8 +472,8 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
         end_date = points[-1]["date"]
         ax.plot([end_date, x_label], [end_pct, y_text], color=color, linewidth=1.2, alpha=0.6, zorder=2)
         suffix = ""
-        if points[0]["period"] != START_PERIOD and label != "Coste salarial por hora":
-            suffix = f", desde {str(points[0]['period'])[:4]}"
+        if points[0]["period"] != str(START_YEAR) and label != "Coste salarial por hora":
+            suffix = f", desde {points[0]['period']}"
         ax.text(
             x_label,
             y_text,
@@ -488,7 +519,7 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
     fig.text(
         0.06,
         0.938,
-        "(ene. 2002-dic. 2025)",
+        "(medias anuales, 2002-2025)",
         fontsize=24,
         fontweight="normal",
         color="#282b31",
@@ -505,11 +536,20 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
 
     footnote = (
         "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y ETCL "
-        "(tabla 11222). Variacion acumulada contra el primer dato disponible de cada serie; "
-        "casi todas desde 2002M01, salarios desde 2002T1 y servicios moviles desde 2017M01."
+        "(tabla 11222). Cada punto es la media anual de la serie mensual o trimestral; "
+        "variacion acumulada contra la primera media anual disponible."
     )
     fig.text(0.06, 0.042, textwrap.fill(footnote, 120), fontsize=8.8, color="#6f737a", ha="left")
-    fig.text(0.86, 0.033, "INE / España", fontsize=16, fontweight="bold", color="#087fba", ha="left")
+    fig.text(
+        0.77,
+        0.038,
+        "Producido por Victoriano Izquierdo",
+        fontsize=11,
+        fontweight="bold",
+        color="#087fba",
+        ha="left",
+    )
+    fig.text(0.77, 0.025, "@victorianoi en X", fontsize=10, color="#087fba", ha="left")
 
     # White band below the x-axis makes the source line feel separate from the plotting area.
     fig.patches.append(Rectangle((0, 0), 1, 0.02, transform=fig.transFigure, color="white", zorder=-1))
@@ -530,11 +570,12 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "",
         "## Criterio",
         "",
-        "- Base principal: primer dato disponible de cada serie dentro de 2002M01-2025M12.",
-        "- La mayoria de partidas del IPC arrancan en 2002M01.",
-        "- `Coste salarial por hora` es trimestral y se normaliza desde 2002T1 hasta 2025T4.",
-        "- `Servicios moviles` empieza en 2017M01 en la subclase actual del INE.",
-        "- La linea negra es el IPC general acumulado desde 2002M01 hasta 2025M12.",
+        "- Cada punto del grafico es una media anual.",
+        "- Base principal: primera media anual disponible de cada serie dentro de 2002-2025.",
+        "- La mayoria de partidas del IPC arrancan en 2002.",
+        "- `Coste salarial por hora` es trimestral y se agrega a media anual.",
+        "- `Servicios moviles` empieza en 2017 en la subclase actual del INE.",
+        "- La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
         "",
         "## Fuentes",
