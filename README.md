@@ -2,7 +2,9 @@
 
 Recreación para España del gráfico de cambios acumulados de precios de bienes y servicios, usando medias anuales de datos oficiales del INE.
 
-![Cambios de precios en España](outputs/ine-price-changes-spain/ine_spain_price_changes.png)
+![Cambios de precios en España, medias anuales con referencia a la pandemia de 2020](https://raw.githubusercontent.com/victoriano/ine-spain-price-changes/e38fa5f/outputs/ine-price-changes-spain/ine_spain_price_changes.png)
+
+Última versión del gráfico: medias anuales `2002-2025`, referencia vertical en `2020`, fuente INE, URL del repo y autoría de Victoriano Izquierdo / `@victorianoi`.
 
 ## Qué incluye
 
