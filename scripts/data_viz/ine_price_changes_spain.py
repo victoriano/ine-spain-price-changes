@@ -42,6 +42,7 @@ subprocess.check_output = _fast_font_probe
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from matplotlib.ticker import NullFormatter
 
 subprocess.check_output = _REAL_CHECK_OUTPUT
 
@@ -429,7 +430,11 @@ def affordability_color(end_pct: float) -> str:
     return "#a94c36" if end_pct >= 0 else "#3f735c"
 
 
-def log_label_positions(end_values: list[tuple[str, float]], min_gap: float = 0.065) -> dict[str, float]:
+def log_label_positions(
+    end_values: list[tuple[str, float]],
+    min_gap: float = 0.065,
+    bottom_ratio: float = 0.045,
+) -> dict[str, float]:
     ordered = sorted(end_values, key=lambda item: item[1], reverse=True)
     placed: list[tuple[str, float]] = []
     for label, desired_pct in ordered:
@@ -440,7 +445,7 @@ def log_label_positions(end_values: list[tuple[str, float]], min_gap: float = 0.
             y_log = desired_log
         placed.append((label, y_log))
 
-    bottom_log = math.log(0.045)
+    bottom_log = math.log(bottom_ratio)
     if placed and placed[-1][1] < bottom_log:
         shift = bottom_log - placed[-1][1]
         placed = [(label, y_log + shift) for label, y_log in placed]
@@ -597,12 +602,13 @@ def plot_affordability_chart(
         )
 
     ax.set_yscale("log")
-    ax.set_ylim(0.04, 1.65)
+    ax.set_ylim(0.18, 1.60)
     ax.set_xlim(x_start, x_right)
-    y_ticks = [0.05, 0.10, 0.20, 0.50, 1.0, 1.50]
-    y_labels = ["-95%", "-90%", "-80%", "-50%", "0%", "+50%"]
+    y_ticks = [0.20, 0.40, 0.60, 0.80, 1.0, 1.20, 1.50]
+    y_labels = ["-80%", "-60%", "-40%", "-20%", "0%", "+20%", "+50%"]
     ax.set_yticks(y_ticks)
     ax.set_yticklabels(y_labels, fontsize=12)
+    ax.yaxis.set_minor_formatter(NullFormatter())
     x_tick_years = [min_year, 2012, 2017, 2020, max_year]
     ax.set_xticks([date(year, 1, 1) for year in x_tick_years])
     ax.set_xticklabels([str(year) for year in x_tick_years], fontsize=13)
@@ -630,6 +636,7 @@ def plot_affordability_chart(
     label_y = log_label_positions(
         [(label, float(points[-1]["affordability_pct"])) for label, points in affordability_points.items()],
         min_gap=0.082,
+        bottom_ratio=0.205,
     )
     for label in plot_order:
         points = affordability_points[label]
@@ -666,7 +673,7 @@ def plot_affordability_chart(
     )
     ax.text(
         date(min_year, 9, 1),
-        0.055,
+        0.225,
         "MÁS ASEQUIBLE",
         color="#3f735c",
         fontsize=15,
