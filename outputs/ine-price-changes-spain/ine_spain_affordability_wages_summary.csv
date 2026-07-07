@@ -1,15 +1,15 @@
-series,base_period,end_period,affordability_pct,price_pct_change,wage_pct_change,source_table,ine_category,note
-Educación superior,2002,2025,17.4,113.6,82.0,79183,10.4 Educación Superior,
-Alimentos y bebidas,2002,2025,8.1,96.8,82.0,76125,01 Alimentos y bebidas no alcohólicas,
-Vivienda y suministros,2002,2025,4.5,90.1,82.0,76125,"04 Vivienda, agua, electricidad, gas y otros combustibles",El IPC espanol no incluye vivienda en propiedad imputada.
-Educación infantil,2002,2025,-5.9,71.2,82.0,79184,10.1.0.1 Educación Infantil,
-Servicios médicos amb.,2002,2025,-13.5,57.3,82.0,79183,06.2 Servicios de cuidados ambulatorios,
-Libros,2002,2025,-14.6,55.4,82.0,76127,09.7.1 Libros,Proxy de libros de texto; la subclase libros educativos empieza en 2007.
-Automóviles,2002,2025,-20.7,44.3,82.0,76127,07.1.1 Automóviles,Proxy de coche nuevo; automoviles nuevos solo esta disponible desde 2017.
-Muebles y hogar,2002,2025,-24.5,37.4,82.0,76125,"05 Muebles, artículos del hogar y artículos para el mantenimiento corriente del hogar",
-Hospitalarios,2002,2025,-26.1,34.5,82.0,79183,06.3 Servicios de cuidados hospitalarios,
-Servicios móviles,2017,2025,-31.5,-13.2,26.9,79184,08.3.2.0 Servicios de comunicación móvil,Disponible desde 2017; porcentaje acumulado desde esa media anual.
-Vestido y calzado,2002,2025,-32.9,22.1,82.0,76125,03 Vestido y calzado,
-Juguetes,2002,2025,-65.9,-38.0,82.0,76127,"09.2.1 Juegos, juguetes y artículos relacionados con las aficiones ",
-Equipos audiovisuales,2002,2025,-89.4,-80.8,82.0,79184,"08.1.4.0 Equipo para la recepción, grabación y reproducción de sonido e imagen",Proxy de TVs.
-Equipos informáticos,2002,2025,-96.2,-93.1,82.0,76127,08.1.3 Equipos de procesamiento de información,Proxy de software/equipo informatico.
+series,base_period,end_period,affordability_pct,price_pct_change,wage_pct_change,denominator_series,denominator_source_table,source_table,ine_category,note
+Educación superior,2008,2024,16.1,109.3,34.3,Salario mediano bruto anual,28191,79183,10.4 Educación Superior,
+Alimentos y bebidas,2008,2024,12.2,92.1,34.3,Salario mediano bruto anual,28191,76125,01 Alimentos y bebidas no alcohólicas,
+Vivienda y suministros,2008,2024,1.0,79.1,34.3,Salario mediano bruto anual,28191,76125,"04 Vivienda, agua, electricidad, gas y otros combustibles",El IPC espanol no incluye vivienda en propiedad imputada.
+Automóviles,2008,2024,-2.6,42.0,34.3,Salario mediano bruto anual,28191,76127,07.1.1 Automóviles,Proxy de coche nuevo; automoviles nuevos solo esta disponible desde 2017.
+Educación infantil,2008,2024,-4.0,67.6,34.3,Salario mediano bruto anual,28191,79184,10.1.0.1 Educación Infantil,
+Libros,2008,2024,-4.4,52.1,34.3,Salario mediano bruto anual,28191,76127,09.7.1 Libros,Proxy de libros de texto; la subclase libros educativos empieza en 2007.
+Servicios médicos amb.,2008,2024,-6.3,53.1,34.3,Salario mediano bruto anual,28191,79183,06.2 Servicios de cuidados ambulatorios,
+Muebles y hogar,2008,2024,-11.0,36.4,34.3,Salario mediano bruto anual,28191,76125,"05 Muebles, artículos del hogar y artículos para el mantenimiento corriente del hogar",
+Vestido y calzado,2008,2024,-18.0,21.6,34.3,Salario mediano bruto anual,28191,76125,03 Vestido y calzado,
+Hospitalarios,2008,2024,-25.0,31.4,34.3,Salario mediano bruto anual,28191,79183,06.3 Servicios de cuidados hospitalarios,
+Servicios móviles,2017,2024,-27.5,-10.4,23.5,Salario mediano bruto anual,28191,79184,08.3.2.0 Servicios de comunicación móvil,Disponible desde 2017; porcentaje acumulado desde esa media anual.
+Juguetes,2008,2024,-50.7,-37.0,34.3,Salario mediano bruto anual,28191,76127,"09.2.1 Juegos, juguetes y artículos relacionados con las aficiones ",
+Equipos audiovisuales,2008,2024,-72.8,-79.7,34.3,Salario mediano bruto anual,28191,79184,"08.1.4.0 Equipo para la recepción, grabación y reproducción de sonido e imagen",Proxy de TVs.
+Equipos informáticos,2008,2024,-78.6,-92.6,34.3,Salario mediano bruto anual,28191,76127,08.1.3 Equipos de procesamiento de información,Proxy de software/equipo informatico.

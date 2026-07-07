@@ -304,6 +304,41 @@ def load_wage_series(cache: dict[int, list[dict[str, str]]]) -> list[dict[str, o
     return annual_points
 
 
+def load_median_wage_series(cache: dict[int, list[dict[str, str]]]) -> list[dict[str, object]]:
+    table_id = 28191
+    rows = cache.setdefault(table_id, read_ine_table(table_id))
+    points = []
+    for row in rows:
+        if row.get("Sexo") != "Ambos sexos":
+            continue
+        if row.get("Comunidades autónomas") != "Total Nacional":
+            continue
+        if row.get("Medidas y percentiles") != "Mediana":
+            continue
+        value = parse_spanish_float(row["Total"])
+        if value is None:
+            continue
+        year = int(row["Periodo"])
+        points.append(
+            {
+                "date": date(year, 1, 1),
+                "period": str(year),
+                "value": value,
+                "series": "Salario mediano bruto anual",
+                "source_table": table_id,
+                "source_level": "EAES",
+                "ine_category": "Ambos sexos, Total Nacional, Mediana",
+                "note": "Salario mediano bruto anual; serie disponible 2008-2024.",
+                "observations": "",
+            }
+        )
+    points.sort(key=lambda item: item["date"])
+    if not points:
+        raise RuntimeError("No median wage data found")
+    add_percent_change(points)
+    return points
+
+
 def add_percent_change(points: list[dict[str, object]]) -> None:
     base_value = float(points[0]["value"])
     for point in points:
@@ -415,22 +450,23 @@ def log_label_positions(end_values: list[tuple[str, float]], min_gap: float = 0.
 
 def build_affordability_series(
     series_points: dict[str, list[dict[str, object]]],
+    denominator_points: list[dict[str, object]],
 ) -> dict[str, list[dict[str, object]]]:
-    wage_points = series_points["Coste salarial por hora"]
-    wage_by_period = {point["period"]: point for point in wage_points}
+    wage_by_period = {point["period"]: point for point in denominator_points}
     affordability: dict[str, list[dict[str, object]]] = {}
 
     for label, points in series_points.items():
         if label in {"Coste salarial por hora", "IPC general"}:
             continue
-        base_period = str(points[0]["period"])
-        wage_base = wage_by_period.get(base_period)
-        if wage_base is None:
+        common_points = [point for point in points if str(point["period"]) in wage_by_period]
+        if not common_points:
             continue
-        price_base_value = float(points[0]["value"])
+        base_period = str(common_points[0]["period"])
+        wage_base = wage_by_period[base_period]
+        price_base_value = float(common_points[0]["value"])
         wage_base_value = float(wage_base["value"])
         adjusted_points = []
-        for point in points:
+        for point in common_points:
             wage_point = wage_by_period.get(str(point["period"]))
             if wage_point is None:
                 continue
@@ -449,6 +485,8 @@ def build_affordability_series(
                     "price_pct_change": point["pct_change"],
                     "wage_pct_change": (wage_ratio - 1.0) * 100.0,
                     "base_period": base_period,
+                    "denominator_series": wage_base["series"],
+                    "denominator_source_table": wage_base["source_table"],
                     "source_table": point["source_table"],
                     "source_level": point["source_level"],
                     "ine_category": point["ine_category"],
@@ -472,6 +510,8 @@ def write_affordability_csv(path: Path, rows: list[dict[str, object]]) -> None:
         "price_pct_change",
         "wage_pct_change",
         "base_period",
+        "denominator_series",
+        "denominator_source_table",
         "source_table",
         "source_level",
         "ine_category",
@@ -501,6 +541,8 @@ def write_affordability_summary(
                 "affordability_pct": round(float(last["affordability_pct"]), 1),
                 "price_pct_change": round(float(last["price_pct_change"]), 1),
                 "wage_pct_change": round(float(last["wage_pct_change"]), 1),
+                "denominator_series": first["denominator_series"],
+                "denominator_source_table": first["denominator_source_table"],
                 "source_table": first["source_table"],
                 "ine_category": first["ine_category"],
                 "note": first.get("note", ""),
@@ -533,7 +575,9 @@ def plot_affordability_chart(
     fig.patch.set_facecolor(bg)
     ax.set_facecolor(bg)
 
-    x_start = date(START_YEAR, 1, 1)
+    min_year = min(int(points[0]["base_period"]) for points in affordability_points.values())
+    max_year = max(point["date"].year for points in affordability_points.values() for point in points)
+    x_start = date(min_year, 1, 1)
     x_label = date(2026, 2, 1)
     x_right = date(2031, 2, 1)
 
@@ -559,7 +603,7 @@ def plot_affordability_chart(
     y_labels = ["-95%", "-90%", "-80%", "-50%", "0%", "+50%"]
     ax.set_yticks(y_ticks)
     ax.set_yticklabels(y_labels, fontsize=12)
-    x_tick_years = [2002, 2007, 2012, 2017, 2020, 2025]
+    x_tick_years = [min_year, 2012, 2017, 2020, max_year]
     ax.set_xticks([date(year, 1, 1) for year in x_tick_years])
     ax.set_xticklabels([str(year) for year in x_tick_years], fontsize=13)
     ax.tick_params(axis="x", length=7, width=1.0)
@@ -570,7 +614,7 @@ def plot_affordability_chart(
     ax.text(
         date(2017, 6, 1),
         1.015,
-        "Coste salarial por hora",
+        "Salario mediano bruto anual",
         color="#1f252b",
         fontsize=9.7,
         fontweight="bold",
@@ -597,7 +641,7 @@ def plot_affordability_chart(
         ax.plot([end_date, x_label], [end_ratio, y_text], color=color, linewidth=0.8, alpha=0.55, zorder=2)
         ax.scatter([end_date], [end_ratio], s=30, facecolor=bg, edgecolor=color, linewidth=1.5, zorder=4)
         suffix = ""
-        if points[0]["base_period"] != str(START_YEAR):
+        if int(points[0]["base_period"]) > min_year:
             suffix = f", desde {points[0]['base_period']}"
         ax.text(
             x_label,
@@ -612,7 +656,7 @@ def plot_affordability_chart(
         )
 
     ax.text(
-        date(2002, 11, 1),
+        date(min_year, 9, 1),
         1.18,
         "MENOS ASEQUIBLE",
         color="#a94c36",
@@ -621,7 +665,7 @@ def plot_affordability_chart(
         ha="left",
     )
     ax.text(
-        date(2002, 11, 1),
+        date(min_year, 9, 1),
         0.055,
         "MÁS ASEQUIBLE",
         color="#3f735c",
@@ -642,7 +686,7 @@ def plot_affordability_chart(
     fig.text(
         0.105,
         0.938,
-        "Precios seleccionados del IPC ajustados por coste salarial por hora. Medias anuales 2002-2025 (escala log).",
+        "Precios seleccionados del IPC ajustados por salario mediano bruto anual. Medias anuales 2008-2024 (escala log).",
         fontsize=12.5,
         color="#777469",
         fontstyle="italic",
@@ -650,9 +694,9 @@ def plot_affordability_chart(
     )
 
     footnote = (
-        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y ETCL "
-        "(tabla 11222). Cada linea muestra precio/salario-hora, rebased a la primera media anual "
-        "disponible de la serie; por encima de 0% exige mas salario-hora que en la base. "
+        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y EAES "
+        "(tabla 28191). Cada linea muestra precio/salario mediano bruto anual, rebased a la primera "
+        "media anual disponible de la serie; por encima de 0% exige mas salario mediano que en la base. "
         "Repo: github.com/victoriano/ine-spain-price-changes."
     )
     fig.text(0.07, 0.053, textwrap.fill(footnote, 130), fontsize=8.4, color="#777469", ha="left")
@@ -869,12 +913,14 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- Cada punto del grafico es una media anual.",
         "- Base principal: primera media anual disponible de cada serie dentro de 2002-2025.",
         "- La mayoria de partidas del IPC arrancan en 2002.",
-        "- `Coste salarial por hora` es trimestral y se agrega a media anual.",
+        "- `Coste salarial por hora` es trimestral y se agrega a media anual para el grafico de cambios de precios.",
+        "- `Salario mediano bruto anual` procede de la EAES y esta disponible para 2008-2024.",
         "- `Servicios moviles` empieza en 2017 en la subclase actual del INE.",
         "- La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.",
         "- La linea vertical gris marca 2020 como referencia temporal de la pandemia.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
-        "- El grafico de asequibilidad divide cada serie de precios por el coste salarial por hora: `precio normalizado / salario normalizado - 1`.",
+        "- El grafico de asequibilidad divide cada serie de precios por el salario mediano bruto anual: `precio normalizado / salario mediano normalizado - 1`.",
+        "- El grafico de asequibilidad no ajusta por impuestos; la mediana salarial de la EAES es bruta.",
         "",
         "## Fuentes",
         "",
@@ -883,6 +929,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- IPC clases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/76127.csv",
         "- IPC subclases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79184.csv",
         "- ETCL salarios por hora: https://www.ine.es/jaxiT3/files/t/csv_bdsc/11222.csv",
+        "- EAES salario mediano bruto anual: https://www.ine.es/jaxiT3/files/t/csv_bdsc/28191.csv",
         "",
         "## Valores finales",
         "",
@@ -907,9 +954,11 @@ def main() -> None:
     for defn in CPI_SERIES:
         series_points[defn.label] = load_cpi_series(defn, cache)
     series_points["Coste salarial por hora"] = load_wage_series(cache)
+    median_wage_points = load_median_wage_series(cache)
 
     all_rows = [point for points in series_points.values() for point in points]
     write_csv(OUT_DIR / "ine_spain_price_changes_series.csv", all_rows)
+    write_csv(OUT_DIR / "ine_spain_median_wage_series.csv", median_wage_points)
     summary_rows = write_summary(OUT_DIR / "ine_spain_price_changes_summary.csv", series_points)
     plot_chart(series_points, summary_rows)
     write_methodology(OUT_DIR / "README.md", summary_rows)
@@ -918,7 +967,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    affordability_points = build_affordability_series(series_points)
+    affordability_points = build_affordability_series(series_points, median_wage_points)
     affordability_rows = [point for points in affordability_points.values() for point in points]
     write_affordability_csv(OUT_DIR / "ine_spain_affordability_wages_series.csv", affordability_rows)
     affordability_summary_rows = write_affordability_summary(
@@ -934,6 +983,7 @@ def main() -> None:
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes.png'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_summary.csv'}")
+    print(f"Wrote {OUT_DIR / 'ine_spain_median_wage_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages.png'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_summary.csv'}")
