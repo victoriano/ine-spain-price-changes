@@ -431,12 +431,23 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
         )
 
     ax.axhline(0, color="#9a9a9a", linewidth=1.2, zorder=1)
+    ax.axvline(date(2020, 1, 1), color="#b6b6b6", linewidth=0.9, zorder=1)
+    ax.text(
+        date(2020, 3, 1),
+        128,
+        "Pandemia",
+        color="#8a8f98",
+        fontsize=9.5,
+        ha="left",
+        va="center",
+        zorder=2,
+    )
     ax.grid(axis="y", color="#9c9c9c", linestyle=(0, (1.2, 2.4)), linewidth=0.75, zorder=0)
     ax.set_ylim(-105, 135)
     ax.set_xlim(x_start, x_right)
     ax.set_yticks([-100, -50, 0, 50, 100])
     ax.set_yticklabels([f"{tick}%" for tick in [-100, -50, 0, 50, 100]], fontsize=13)
-    x_tick_years = [2002, 2007, 2012, 2017, 2022, 2025]
+    x_tick_years = [2002, 2007, 2012, 2017, 2020, 2025]
     ax.set_xticks([date(year, 1, 1) for year in x_tick_years])
     ax.set_xticklabels([str(year) for year in x_tick_years], fontsize=13)
     ax.tick_params(axis="x", length=7, width=1.0)
@@ -537,7 +548,8 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
     footnote = (
         "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y ETCL "
         "(tabla 11222). Cada punto es la media anual de la serie mensual o trimestral; "
-        "variacion acumulada contra la primera media anual disponible."
+        "variacion acumulada contra la primera media anual disponible. "
+        "Repo: github.com/victoriano/ine-spain-price-changes."
     )
     fig.text(0.06, 0.042, textwrap.fill(footnote, 120), fontsize=8.8, color="#6f737a", ha="left")
     fig.text(
@@ -576,6 +588,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- `Coste salarial por hora` es trimestral y se agrega a media anual.",
         "- `Servicios moviles` empieza en 2017 en la subclase actual del INE.",
         "- La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.",
+        "- La linea vertical gris marca 2020 como referencia temporal de la pandemia.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
         "",
         "## Fuentes",

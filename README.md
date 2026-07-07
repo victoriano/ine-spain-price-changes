@@ -19,6 +19,8 @@ El periodo principal es `2002-2025`. Cada punto del gráfico es la media anual d
 
 La variación de cada línea se calcula contra la primera media anual disponible dentro del periodo. La línea negra es el IPC general acumulado desde la media anual de `2002` hasta la media anual de `2025`. El coste salarial por hora procede de la ETCL y se agrega desde datos trimestrales. La serie de servicios móviles empieza en `2017`, porque no está disponible con la subclase actual desde 2002.
 
+El eje incluye una referencia vertical gris en `2020` para situar la pandemia.
+
 Algunas categorías son equivalentes aproximados de las del gráfico estadounidense original:
 
 - `Libros` se usa como proxy de libros de texto.

@@ -10,6 +10,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 - `Coste salarial por hora` es trimestral y se agrega a media anual.
 - `Servicios moviles` empieza en 2017 en la subclase actual del INE.
 - La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.
+- La linea vertical gris marca 2020 como referencia temporal de la pandemia.
 - Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.
 
 ## Fuentes
