@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import os
 import subprocess
 import textwrap
@@ -389,6 +390,289 @@ def color_for(label: str, end_pct: float, overall_pct: float) -> str:
     return "#0f3460"
 
 
+def affordability_color(end_pct: float) -> str:
+    return "#a94c36" if end_pct >= 0 else "#3f735c"
+
+
+def log_label_positions(end_values: list[tuple[str, float]], min_gap: float = 0.065) -> dict[str, float]:
+    ordered = sorted(end_values, key=lambda item: item[1], reverse=True)
+    placed: list[tuple[str, float]] = []
+    for label, desired_pct in ordered:
+        desired_log = math.log(max(0.04, 1.0 + desired_pct / 100.0))
+        if placed:
+            y_log = min(desired_log, placed[-1][1] - min_gap)
+        else:
+            y_log = desired_log
+        placed.append((label, y_log))
+
+    bottom_log = math.log(0.045)
+    if placed and placed[-1][1] < bottom_log:
+        shift = bottom_log - placed[-1][1]
+        placed = [(label, y_log + shift) for label, y_log in placed]
+
+    return {label: math.exp(y_log) for label, y_log in placed}
+
+
+def build_affordability_series(
+    series_points: dict[str, list[dict[str, object]]],
+) -> dict[str, list[dict[str, object]]]:
+    wage_points = series_points["Coste salarial por hora"]
+    wage_by_period = {point["period"]: point for point in wage_points}
+    affordability: dict[str, list[dict[str, object]]] = {}
+
+    for label, points in series_points.items():
+        if label in {"Coste salarial por hora", "IPC general"}:
+            continue
+        base_period = str(points[0]["period"])
+        wage_base = wage_by_period.get(base_period)
+        if wage_base is None:
+            continue
+        price_base_value = float(points[0]["value"])
+        wage_base_value = float(wage_base["value"])
+        adjusted_points = []
+        for point in points:
+            wage_point = wage_by_period.get(str(point["period"]))
+            if wage_point is None:
+                continue
+            price_ratio = float(point["value"]) / price_base_value
+            wage_ratio = float(wage_point["value"]) / wage_base_value
+            affordability_ratio = price_ratio / wage_ratio
+            adjusted_points.append(
+                {
+                    "series": label,
+                    "period": point["period"],
+                    "date": point["date"],
+                    "value": affordability_ratio,
+                    "affordability_pct": (affordability_ratio - 1.0) * 100.0,
+                    "price_value": point["value"],
+                    "wage_value": wage_point["value"],
+                    "price_pct_change": point["pct_change"],
+                    "wage_pct_change": (wage_ratio - 1.0) * 100.0,
+                    "base_period": base_period,
+                    "source_table": point["source_table"],
+                    "source_level": point["source_level"],
+                    "ine_category": point["ine_category"],
+                    "note": point.get("note", ""),
+                    "observations": point.get("observations", ""),
+                }
+            )
+        affordability[label] = adjusted_points
+    return affordability
+
+
+def write_affordability_csv(path: Path, rows: list[dict[str, object]]) -> None:
+    fieldnames = [
+        "series",
+        "period",
+        "date",
+        "value",
+        "affordability_pct",
+        "price_value",
+        "wage_value",
+        "price_pct_change",
+        "wage_pct_change",
+        "base_period",
+        "source_table",
+        "source_level",
+        "ine_category",
+        "note",
+        "observations",
+    ]
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({key: row.get(key, "") for key in fieldnames})
+
+
+def write_affordability_summary(
+    path: Path,
+    affordability_points: dict[str, list[dict[str, object]]],
+) -> list[dict[str, object]]:
+    rows = []
+    for label, points in affordability_points.items():
+        first = points[0]
+        last = points[-1]
+        rows.append(
+            {
+                "series": label,
+                "base_period": first["base_period"],
+                "end_period": last["period"],
+                "affordability_pct": round(float(last["affordability_pct"]), 1),
+                "price_pct_change": round(float(last["price_pct_change"]), 1),
+                "wage_pct_change": round(float(last["wage_pct_change"]), 1),
+                "source_table": first["source_table"],
+                "ine_category": first["ine_category"],
+                "note": first.get("note", ""),
+            }
+        )
+    rows.sort(key=lambda item: float(item["affordability_pct"]), reverse=True)
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    return rows
+
+
+def plot_affordability_chart(
+    affordability_points: dict[str, list[dict[str, object]]],
+    summary_rows: list[dict[str, object]],
+) -> None:
+    plt.rcParams.update(
+        {
+            "font.family": "DejaVu Serif",
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+            "axes.edgecolor": "#bfb8a6",
+            "xtick.color": "#777469",
+            "ytick.color": "#777469",
+        }
+    )
+    bg = "#f7f2e6"
+    fig, ax = plt.subplots(figsize=(11.8, 14.6), dpi=180)
+    fig.patch.set_facecolor(bg)
+    ax.set_facecolor(bg)
+
+    x_start = date(START_YEAR, 1, 1)
+    x_label = date(2026, 2, 1)
+    x_right = date(2031, 2, 1)
+
+    end_lookup = {row["series"]: float(row["affordability_pct"]) for row in summary_rows}
+    plot_order = list(affordability_points.keys())
+    for label in plot_order:
+        points = affordability_points[label]
+        end_pct = end_lookup[label]
+        ax.plot(
+            [point["date"] for point in points],
+            [point["value"] for point in points],
+            color=affordability_color(end_pct),
+            linewidth=2.2,
+            alpha=0.97,
+            solid_capstyle="round",
+            zorder=3,
+        )
+
+    ax.set_yscale("log")
+    ax.set_ylim(0.04, 1.65)
+    ax.set_xlim(x_start, x_right)
+    y_ticks = [0.05, 0.10, 0.20, 0.50, 1.0, 1.50]
+    y_labels = ["-95%", "-90%", "-80%", "-50%", "0%", "+50%"]
+    ax.set_yticks(y_ticks)
+    ax.set_yticklabels(y_labels, fontsize=12)
+    x_tick_years = [2002, 2007, 2012, 2017, 2020, 2025]
+    ax.set_xticks([date(year, 1, 1) for year in x_tick_years])
+    ax.set_xticklabels([str(year) for year in x_tick_years], fontsize=13)
+    ax.tick_params(axis="x", length=7, width=1.0)
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="y", color="#d9d2c0", linewidth=0.9, zorder=0)
+
+    ax.axhline(1.0, color="#1f252b", linewidth=3.0, zorder=5)
+    ax.text(
+        date(2017, 6, 1),
+        1.015,
+        "Coste salarial por hora",
+        color="#1f252b",
+        fontsize=9.7,
+        fontweight="bold",
+        ha="left",
+        va="bottom",
+        zorder=6,
+    )
+    ax.scatter([date(2025, 1, 1)], [1.0], s=38, facecolor=bg, edgecolor="#1f252b", linewidth=2, zorder=6)
+
+    ax.axvline(date(2020, 1, 1), color="#c7c0ae", linewidth=0.9, zorder=1)
+    ax.text(date(2020, 3, 1), 1.48, "Pandemia", color="#8b877b", fontsize=9.5, ha="left")
+
+    label_y = log_label_positions(
+        [(label, float(points[-1]["affordability_pct"])) for label, points in affordability_points.items()],
+        min_gap=0.082,
+    )
+    for label in plot_order:
+        points = affordability_points[label]
+        end_pct = float(points[-1]["affordability_pct"])
+        color = affordability_color(end_pct)
+        y_text = label_y[label]
+        end_ratio = float(points[-1]["value"])
+        end_date = points[-1]["date"]
+        ax.plot([end_date, x_label], [end_ratio, y_text], color=color, linewidth=0.8, alpha=0.55, zorder=2)
+        ax.scatter([end_date], [end_ratio], s=30, facecolor=bg, edgecolor=color, linewidth=1.5, zorder=4)
+        suffix = ""
+        if points[0]["base_period"] != str(START_YEAR):
+            suffix = f", desde {points[0]['base_period']}"
+        ax.text(
+            x_label,
+            y_text,
+            f"{label} ({end_pct:+.1f}%{suffix})",
+            color=color,
+            fontsize=10.6,
+            fontweight="bold",
+            ha="left",
+            va="center",
+            zorder=7,
+        )
+
+    ax.text(
+        date(2002, 11, 1),
+        1.18,
+        "MENOS ASEQUIBLE",
+        color="#a94c36",
+        fontsize=15,
+        fontweight="bold",
+        ha="left",
+    )
+    ax.text(
+        date(2002, 11, 1),
+        0.055,
+        "MÁS ASEQUIBLE",
+        color="#3f735c",
+        fontsize=15,
+        fontweight="bold",
+        ha="left",
+    )
+
+    fig.text(
+        0.105,
+        0.962,
+        "¿SE HA ROTO EL SUEÑO ESPAÑOL?",
+        fontsize=24,
+        fontweight="bold",
+        color="#1f252b",
+        ha="left",
+    )
+    fig.text(
+        0.105,
+        0.938,
+        "Precios seleccionados del IPC ajustados por coste salarial por hora. Medias anuales 2002-2025 (escala log).",
+        fontsize=12.5,
+        color="#777469",
+        fontstyle="italic",
+        ha="left",
+    )
+
+    footnote = (
+        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y ETCL "
+        "(tabla 11222). Cada linea muestra precio/salario-hora, rebased a la primera media anual "
+        "disponible de la serie; por encima de 0% exige mas salario-hora que en la base. "
+        "Repo: github.com/victoriano/ine-spain-price-changes."
+    )
+    fig.text(0.07, 0.053, textwrap.fill(footnote, 130), fontsize=8.4, color="#777469", ha="left")
+    fig.text(
+        0.77,
+        0.037,
+        "Producido por Victoriano Izquierdo",
+        fontsize=10.5,
+        fontweight="bold",
+        color="#087fba",
+        ha="left",
+    )
+    fig.text(0.77, 0.025, "@victorianoi en X", fontsize=9.5, color="#087fba", ha="left")
+
+    fig.subplots_adjust(left=0.13, right=0.74, top=0.88, bottom=0.12)
+    fig.savefig(OUT_DIR / "ine_spain_affordability_wages.png", bbox_inches="tight", facecolor=bg)
+    fig.savefig(OUT_DIR / "ine_spain_affordability_wages.svg", bbox_inches="tight", facecolor=bg)
+    plt.close(fig)
+
+
 def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: list[dict[str, object]]) -> None:
     plt.rcParams.update(
         {
@@ -590,6 +874,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.",
         "- La linea vertical gris marca 2020 como referencia temporal de la pandemia.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
+        "- El grafico de asequibilidad divide cada serie de precios por el coste salarial por hora: `precio normalizado / salario normalizado - 1`.",
         "",
         "## Fuentes",
         "",
@@ -633,9 +918,25 @@ def main() -> None:
         encoding="utf-8",
     )
 
+    affordability_points = build_affordability_series(series_points)
+    affordability_rows = [point for points in affordability_points.values() for point in points]
+    write_affordability_csv(OUT_DIR / "ine_spain_affordability_wages_series.csv", affordability_rows)
+    affordability_summary_rows = write_affordability_summary(
+        OUT_DIR / "ine_spain_affordability_wages_summary.csv",
+        affordability_points,
+    )
+    plot_affordability_chart(affordability_points, affordability_summary_rows)
+    (OUT_DIR / "affordability_summary.json").write_text(
+        json.dumps(affordability_summary_rows, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes.png'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_summary.csv'}")
+    print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages.png'}")
+    print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_series.csv'}")
+    print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_summary.csv'}")
 
 
 if __name__ == "__main__":

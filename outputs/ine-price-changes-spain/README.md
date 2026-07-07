@@ -12,6 +12,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 - La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.
 - La linea vertical gris marca 2020 como referencia temporal de la pandemia.
 - Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.
+- El grafico de asequibilidad divide cada serie de precios por el coste salarial por hora: `precio normalizado / salario normalizado - 1`.
 
 ## Fuentes
 
