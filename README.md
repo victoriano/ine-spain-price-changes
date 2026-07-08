@@ -18,7 +18,7 @@ Este segundo gráfico divide cada serie de precios por el salario mediano bruto 
 
 ![Poder adquisitivo comparado entre España, Francia, Reino Unido, Suiza y EEUU](outputs/international-purchasing-power/international_purchasing_power.png)
 
-Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. Cada curva muestra qué porcentaje de adultos queda por encima de cada nivel de renta anual equivalente, convertida a euros-PPA mediante paridad de poder adquisitivo. El panel derecho resume qué porcentaje de cada país supera la mediana española de `2024`.
+Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. Cada curva muestra qué porcentaje de adultos queda por encima de cada nivel de renta anual equivalente, convertida a euros-PPA mediante paridad de poder adquisitivo. La visualización muestra percentiles `5-99` para evitar el arranque mecánico en `100%` cuando el umbral es casi cero; los CSV conservan `p0-p99`. El panel derecho resume qué porcentaje de cada país supera la mediana española de `2024`.
 
 No es una distribución de salario bruto. Usa renta nacional post-impuestos por adulto equivalente, que incluye redistribución en especie/gasto público imputado; por eso es más útil para comparar nivel de vida amplio, pero debe leerse con esa cautela.
 

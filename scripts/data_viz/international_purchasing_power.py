@@ -51,6 +51,7 @@ WID_YEAR = 2024
 INCOME_VARIABLE = "tdiincj992"
 AVERAGE_VARIABLE = "adiincj992"
 PPP_EUR_VARIABLE = "xlceupi999"
+DISPLAY_MIN_PERCENTILE = 5
 
 
 @dataclass(frozen=True)
@@ -239,7 +240,11 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
 
     for item in country_data:
         country: Country = item["country"]
-        rows = item["threshold_rows"]
+        rows = [
+            row
+            for row in item["threshold_rows"]
+            if int(row["percentile"]) >= DISPLAY_MIN_PERCENTILE
+        ]
         x = [row["income_eur_ppa"] / 1000 for row in rows]
         y = [row["adults_above_pct"] for row in rows]
         ax.plot(
@@ -267,12 +272,12 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     )
     ax.axhline(50, color="#1f252b", linewidth=1.0, alpha=0.18, zorder=1)
 
-    ax.set_xlim(0, 135)
-    ax.set_ylim(0, 100)
+    ax.set_xlim(5, 135)
+    ax.set_ylim(0, 96)
     ax.set_xlabel("Renta anual equivalente, miles de euros-PPA", fontsize=10.5, color=text, labelpad=10)
     ax.set_ylabel("% de adultos con renta superior", fontsize=10.5, color=text, labelpad=10)
-    ax.set_xticks([0, 20, 40, 60, 80, 100, 120])
-    ax.set_yticks([0, 20, 40, 60, 80, 100])
+    ax.set_xticks([10, 20, 40, 60, 80, 100, 120])
+    ax.set_yticks([0, 20, 40, 60, 80, 95])
     ax.yaxis.set_major_formatter(FuncFormatter(lambda value, _pos: f"{value:.0f}%"))
     ax.grid(axis="both", color=grid, linewidth=0.8, alpha=0.85, zorder=0)
     ax.legend(
@@ -285,9 +290,9 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     )
 
     ax.text(
-        2,
+        7,
         9,
-        "Más a la derecha = mayor poder adquisitivo\nMás arriba = más población por encima del umbral",
+        "Más a la derecha = mayor poder adquisitivo\nMás arriba = más población por encima del umbral\nSe omite el tramo p0-p4 para evitar el arranque mecánico en 100%",
         fontsize=9.2,
         color="#777469",
         ha="left",
@@ -348,7 +353,7 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     fig.text(
         0.055,
         0.917,
-        "Renta post-impuestos nacional por adulto equivalente, convertida a euros-PPA. Adultos, 2024.",
+        "Renta post-impuestos nacional por adulto equivalente, convertida a euros-PPA. Adultos, 2024. Percentiles 5-99.",
         fontsize=13.2,
         color="#777469",
         fontstyle="italic",
@@ -359,7 +364,8 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
         "Fuente: WID.world, descargas bulk por país (ES, FR, GB, CH, US). Variable principal: tdiincj992 "
         "(umbrales de renta nacional post-impuestos, equal-split adults); conversión: xlceupi999 "
         "(moneda local por euro-PPA). Incluye redistribución en especie/gasto público imputado, por lo que "
-        "no equivale a salario bruto ni a renta disponible estricta de caja. Repo: "
+        "no equivale a salario bruto ni a renta disponible estricta de caja. Se visualizan percentiles 5-99 "
+        "para evitar que el umbral cero domine la lectura; los CSV conservan p0-p99. Repo: "
         "github.com/victoriano/ine-spain-price-changes."
     )
     fig.text(0.055, 0.047, textwrap.fill(footnote, 165), fontsize=8.2, color="#777469", ha="left")
@@ -374,7 +380,7 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     )
     fig.text(0.735, 0.03, "@victorianoi en X", fontsize=9.3, color="#087fba", ha="left")
 
-    fig.subplots_adjust(left=0.07, right=0.96, top=0.86, bottom=0.14)
+    fig.subplots_adjust(left=0.07, right=0.96, top=0.86, bottom=0.20)
     fig.savefig(OUT_DIR / "international_purchasing_power.png", bbox_inches="tight", facecolor=bg)
     fig.savefig(OUT_DIR / "international_purchasing_power.svg", bbox_inches="tight", facecolor=bg)
     plt.close(fig)
@@ -409,7 +415,7 @@ Referencia: mediana española de `{WID_YEAR}`, `{fmt_spanish_integer(next(row['s
 - Fuente: WID.world bulk downloads por país.
 - Variable de renta: `tdiincj992`, umbral de renta nacional post-impuestos por percentil, adultos `equal-split`.
 - Conversión a euros-PPA: cada umbral local se divide por `xlceupi999`, el factor de moneda local por euro-PPA.
-- El panel principal muestra, para cada nivel del eje X, qué porcentaje de adultos queda por encima de ese poder adquisitivo.
+- El panel principal muestra, para cada nivel del eje X, qué porcentaje de adultos queda por encima de ese poder adquisitivo. Visualmente se muestran los percentiles 5-99 para evitar que el umbral cero genere un arranque mecánico en 100%; los CSV conservan p0-p99.
 - El panel derecho resume qué porcentaje de cada país supera la mediana española.
 
 Esta no es una distribución de salario bruto. Es una métrica más amplia de nivel de vida porque incluye redistribución en especie/gasto público imputado dentro de la renta nacional post-impuestos. WID tiene también `cainc` para renta disponible post-impuestos estricta, pero en la descarga actual no ofrece umbrales/promedios con granularidad suficiente para construir este gráfico comparable.
