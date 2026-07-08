@@ -12,7 +12,7 @@ Recreación para España del gráfico de cambios acumulados de precios de bienes
 
 ![Asequibilidad de precios en España ajustada por salario mediano bruto anual](outputs/ine-price-changes-spain/ine_spain_affordability_wages.png)
 
-Este segundo gráfico divide cada serie de precios por el salario mediano bruto anual. Por encima de `0%`, la partida exige más salario mediano que en el año base; por debajo de `0%`, exige menos. La serie de salario mediano del INE está disponible para `2008-2024`, así que este gráfico usa ese periodo.
+Este segundo gráfico divide cada serie de precios por el salario mediano bruto anual. Por encima de `0%`, la partida exige más salario mediano que en el año base; por debajo de `0%`, exige menos. La serie de salario mediano del INE está disponible para `2008-2024`, así que este gráfico usa ese periodo. Además de las partidas del IPC, incluye una línea de `Compra de vivienda` con el Índice de Precios de Vivienda del INE.
 
 ## Originales de referencia
 
@@ -29,6 +29,7 @@ Estos son los dos gráficos estadounidenses originales usados como inspiración 
 - `outputs/ine-price-changes-spain/ine_spain_price_changes_series.csv`: series anuales normalizadas usadas para dibujar.
 - `outputs/ine-price-changes-spain/ine_spain_price_changes_summary.csv`: tabla resumen con el cambio acumulado final.
 - `outputs/ine-price-changes-spain/ine_spain_median_wage_series.csv`: serie anual de salario mediano bruto usada como denominador del gráfico de asequibilidad.
+- `outputs/ine-price-changes-spain/ine_spain_home_purchase_series.csv`: Índice de Precios de Vivienda nacional general usado para la línea de compra de vivienda.
 - `outputs/ine-price-changes-spain/summary.json`: el mismo resumen en JSON.
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages.png`: gráfico ajustado por salario mediano bruto anual.
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages.svg`: versión vectorial del gráfico ajustado por salarios.
@@ -49,7 +50,7 @@ El eje incluye una referencia vertical gris en `2020` para situar la pandemia.
 
 El gráfico de asequibilidad usa la fórmula `precio normalizado / salario mediano normalizado - 1`, con escala logarítmica para comparar mejor tanto las caídas fuertes como las subidas. El denominador es el salario mediano bruto anual de la EAES, no el salario neto después de impuestos.
 
-La categoría de vivienda debe leerse con cautela. `Vivienda y suministros` es el grupo del IPC español para vivienda, agua, electricidad, gas y otros combustibles, pero no mide la compra de vivienda en propiedad, entrada, principal de hipoteca ni tipos de interés. Para un análisis específico de vivienda habría que cruzar el Índice de Precios de Vivienda, alquileres y coste hipotecario con renta o salario mediano.
+La vivienda debe leerse con cautela. `Vivienda y suministros` es el grupo del IPC español para vivienda, agua, electricidad, gas y otros combustibles, pero no mide la compra de vivienda en propiedad. Para capturar esa parte, el gráfico de asequibilidad añade `Compra de vivienda` con el Índice de Precios de Vivienda nacional general del INE. Aun así, esa línea mide precios de compraventa, no entrada, principal de hipoteca, tipos de interés ni esfuerzo financiero mensual.
 
 Algunas categorías son equivalentes aproximados de las del gráfico estadounidense original:
 
@@ -58,6 +59,7 @@ Algunas categorías son equivalentes aproximados de las del gráfico estadounide
 - `Equipos audiovisuales` se usa como proxy de TVs.
 - `Equipos informáticos` se usa como proxy de software/equipo informático.
 - `Vivienda y suministros` es el grupo del IPC español; no incluye vivienda en propiedad imputada.
+- `Compra de vivienda` usa el Índice de Precios de Vivienda nacional general del INE; se interpreta con base `2008`, año alto del ciclo inmobiliario.
 
 ## Fuentes
 
@@ -65,6 +67,7 @@ Algunas categorías son equivalentes aproximados de las del gráfico estadounide
 - INE IPC subgrupos: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79183.csv
 - INE IPC clases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/76127.csv
 - INE IPC subclases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79184.csv
+- INE IPV compra de vivienda: https://www.ine.es/jaxiT3/files/t/csv_bdsc/25173.csv
 - INE ETCL salarios por hora: https://www.ine.es/jaxiT3/files/t/csv_bdsc/11222.csv
 - INE EAES salario mediano bruto anual: https://www.ine.es/jaxiT3/files/t/csv_bdsc/28191.csv
 

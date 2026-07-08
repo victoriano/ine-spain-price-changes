@@ -340,6 +340,44 @@ def load_median_wage_series(cache: dict[int, list[dict[str, str]]]) -> list[dict
     return points
 
 
+def load_home_purchase_series(cache: dict[int, list[dict[str, str]]]) -> list[dict[str, object]]:
+    table_id = 25173
+    rows = cache.setdefault(table_id, read_ine_table(table_id))
+    points = []
+    for row in rows:
+        if row.get("Comunidades y Ciudades Autónomas") != "Nacional":
+            continue
+        if row.get("General, vivienda nueva y de segunda mano") != "General":
+            continue
+        if row.get("Índices y tasas") != "Media anual":
+            continue
+        value = parse_spanish_float(row["Total"])
+        if value is None:
+            continue
+        year = int(row["Periodo"])
+        points.append(
+            {
+                "date": date(year, 1, 1),
+                "period": str(year),
+                "value": value,
+                "series": "Compra de vivienda",
+                "source_table": table_id,
+                "source_level": "IPV",
+                "ine_category": "Nacional, General, Media anual",
+                "note": (
+                    "Indice de Precios de Vivienda; compra de vivienda nueva y segunda mano. "
+                    "No incluye entrada, intereses ni coste financiero."
+                ),
+                "observations": "",
+            }
+        )
+    points.sort(key=lambda item: item["date"])
+    if not points:
+        raise RuntimeError("No home purchase data found")
+    add_percent_change(points)
+    return points
+
+
 def add_percent_change(points: list[dict[str, object]]) -> None:
     base_value = float(points[0]["value"])
     for point in points:
@@ -693,7 +731,7 @@ def plot_affordability_chart(
     fig.text(
         0.105,
         0.938,
-        "Precios seleccionados del IPC ajustados por salario mediano bruto anual. Medias anuales 2008-2024 (escala log).",
+        "Precios seleccionados del IPC e IPV ajustados por salario mediano bruto anual. Medias anuales 2008-2024 (escala log).",
         fontsize=12.5,
         color="#777469",
         fontstyle="italic",
@@ -701,7 +739,7 @@ def plot_affordability_chart(
     )
 
     footnote = (
-        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y EAES "
+        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184), IPV (tabla 25173) y EAES "
         "(tabla 28191). Cada linea muestra precio/salario mediano bruto anual, rebased a la primera "
         "media anual disponible de la serie; por encima de 0% exige mas salario mediano que en la base. "
         "Repo: github.com/victoriano/ine-spain-price-changes."
@@ -926,6 +964,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.",
         "- La linea vertical gris marca 2020 como referencia temporal de la pandemia.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
+        "- `Compra de vivienda` usa el Indice de Precios de Vivienda nacional general, media anual; mide precio de compraventa, no esfuerzo hipotecario ni coste financiero.",
         "- El grafico de asequibilidad divide cada serie de precios por el salario mediano bruto anual: `precio normalizado / salario mediano normalizado - 1`.",
         "- El grafico de asequibilidad no ajusta por impuestos; la mediana salarial de la EAES es bruta.",
         "",
@@ -935,6 +974,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- IPC subgrupos: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79183.csv",
         "- IPC clases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/76127.csv",
         "- IPC subclases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79184.csv",
+        "- IPV compra de vivienda: https://www.ine.es/jaxiT3/files/t/csv_bdsc/25173.csv",
         "- ETCL salarios por hora: https://www.ine.es/jaxiT3/files/t/csv_bdsc/11222.csv",
         "- EAES salario mediano bruto anual: https://www.ine.es/jaxiT3/files/t/csv_bdsc/28191.csv",
         "",
@@ -962,10 +1002,12 @@ def main() -> None:
         series_points[defn.label] = load_cpi_series(defn, cache)
     series_points["Coste salarial por hora"] = load_wage_series(cache)
     median_wage_points = load_median_wage_series(cache)
+    home_purchase_points = load_home_purchase_series(cache)
 
     all_rows = [point for points in series_points.values() for point in points]
     write_csv(OUT_DIR / "ine_spain_price_changes_series.csv", all_rows)
     write_csv(OUT_DIR / "ine_spain_median_wage_series.csv", median_wage_points)
+    write_csv(OUT_DIR / "ine_spain_home_purchase_series.csv", home_purchase_points)
     summary_rows = write_summary(OUT_DIR / "ine_spain_price_changes_summary.csv", series_points)
     plot_chart(series_points, summary_rows)
     write_methodology(OUT_DIR / "README.md", summary_rows)
@@ -974,7 +1016,8 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    affordability_points = build_affordability_series(series_points, median_wage_points)
+    affordability_series_points = {**series_points, "Compra de vivienda": home_purchase_points}
+    affordability_points = build_affordability_series(affordability_series_points, median_wage_points)
     affordability_rows = [point for points in affordability_points.values() for point in points]
     write_affordability_csv(OUT_DIR / "ine_spain_affordability_wages_series.csv", affordability_rows)
     affordability_summary_rows = write_affordability_summary(
@@ -991,6 +1034,7 @@ def main() -> None:
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_price_changes_summary.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_median_wage_series.csv'}")
+    print(f"Wrote {OUT_DIR / 'ine_spain_home_purchase_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages.png'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_series.csv'}")
     print(f"Wrote {OUT_DIR / 'ine_spain_affordability_wages_summary.csv'}")

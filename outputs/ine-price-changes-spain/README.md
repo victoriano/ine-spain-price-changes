@@ -13,6 +13,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 - La linea negra es el IPC general acumulado desde la media anual de 2002 hasta la media anual de 2025.
 - La linea vertical gris marca 2020 como referencia temporal de la pandemia.
 - Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.
+- `Compra de vivienda` usa el Indice de Precios de Vivienda nacional general, media anual; mide precio de compraventa, no esfuerzo hipotecario ni coste financiero.
 - El grafico de asequibilidad divide cada serie de precios por el salario mediano bruto anual: `precio normalizado / salario mediano normalizado - 1`.
 - El grafico de asequibilidad no ajusta por impuestos; la mediana salarial de la EAES es bruta.
 
@@ -22,6 +23,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 - IPC subgrupos: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79183.csv
 - IPC clases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/76127.csv
 - IPC subclases: https://www.ine.es/jaxiT3/files/t/csv_bdsc/79184.csv
+- IPV compra de vivienda: https://www.ine.es/jaxiT3/files/t/csv_bdsc/25173.csv
 - ETCL salarios por hora: https://www.ine.es/jaxiT3/files/t/csv_bdsc/11222.csv
 - EAES salario mediano bruto anual: https://www.ine.es/jaxiT3/files/t/csv_bdsc/28191.csv
 

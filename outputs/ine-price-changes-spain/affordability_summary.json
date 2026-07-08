@@ -117,6 +117,19 @@
     "note": ""
   },
   {
+    "series": "Compra de vivienda",
+    "base_period": "2008",
+    "end_period": "2024",
+    "affordability_pct": -19.3,
+    "price_pct_change": 6.7,
+    "wage_pct_change": 34.3,
+    "denominator_series": "Salario mediano bruto anual",
+    "denominator_source_table": 28191,
+    "source_table": 25173,
+    "ine_category": "Nacional, General, Media anual",
+    "note": "Indice de Precios de Vivienda; compra de vivienda nueva y segunda mano. No incluye entrada, intereses ni coste financiero."
+  },
+  {
     "series": "Hospitalarios",
     "base_period": "2008",
     "end_period": "2024",
