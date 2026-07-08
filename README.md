@@ -14,6 +14,14 @@ Recreación para España del gráfico de cambios acumulados de precios de bienes
 
 Este segundo gráfico divide cada serie de precios por el salario mediano bruto anual. Por encima de `0%`, la partida exige más salario mediano que en el año base; por debajo de `0%`, exige menos. La serie de salario mediano del INE está disponible para `2008-2024`, así que este gráfico usa ese periodo. Además de las partidas del IPC, incluye una línea de `Compra de vivienda` con el Índice de Precios de Vivienda del INE.
 
+## Poder adquisitivo internacional
+
+![Poder adquisitivo comparado entre España, Francia, Reino Unido, Suiza y EEUU](outputs/international-purchasing-power/international_purchasing_power.png)
+
+Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. Cada curva muestra qué porcentaje de adultos queda por encima de cada nivel de renta anual equivalente, convertida a euros-PPA mediante paridad de poder adquisitivo. El panel derecho resume qué porcentaje de cada país supera la mediana española de `2024`.
+
+No es una distribución de salario bruto. Usa renta nacional post-impuestos por adulto equivalente, que incluye redistribución en especie/gasto público imputado; por eso es más útil para comparar nivel de vida amplio, pero debe leerse con esa cautela.
+
 ## Originales de referencia
 
 Estos son los dos gráficos estadounidenses originales usados como inspiración visual y metodológica.
@@ -36,9 +44,15 @@ Estos son los dos gráficos estadounidenses originales usados como inspiración 
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages_series.csv`: series de asequibilidad usadas para dibujar.
 - `outputs/ine-price-changes-spain/ine_spain_affordability_wages_summary.csv`: resumen final de asequibilidad por partida.
 - `outputs/ine-price-changes-spain/affordability_summary.json`: el mismo resumen de asequibilidad en JSON.
+- `outputs/international-purchasing-power/international_purchasing_power.png`: gráfico internacional de poder adquisitivo en euros-PPA.
+- `outputs/international-purchasing-power/international_purchasing_power.svg`: versión vectorial del gráfico internacional.
+- `outputs/international-purchasing-power/international_purchasing_power_thresholds.csv`: umbrales WID por percentil, país y euros-PPA.
+- `outputs/international-purchasing-power/international_purchasing_power_summary.csv`: resumen por país.
+- `outputs/international-purchasing-power/summary.json`: el mismo resumen internacional en JSON.
 - `references/originals/price-changes-us-original.png`: gráfico estadounidense original de cambios de precios.
 - `references/originals/american-dream-broken-original.png`: gráfico estadounidense original de asequibilidad ajustada por salarios.
 - `scripts/data_viz/ine_price_changes_spain.py`: script reproducible que descarga los datos del INE y regenera los archivos.
+- `scripts/data_viz/international_purchasing_power.py`: script reproducible que descarga los datos WID y regenera la comparación internacional.
 
 ## Metodología
 
@@ -70,6 +84,8 @@ Algunas categorías son equivalentes aproximados de las del gráfico estadounide
 - INE IPV compra de vivienda: https://www.ine.es/jaxiT3/files/t/csv_bdsc/25173.csv
 - INE ETCL salarios por hora: https://www.ine.es/jaxiT3/files/t/csv_bdsc/11222.csv
 - INE EAES salario mediano bruto anual: https://www.ine.es/jaxiT3/files/t/csv_bdsc/28191.csv
+- WID.world datos y descargas bulk: https://wid.world/data/
+- WID.world diccionario de códigos: https://wid.world/codes-dictionary/
 
 ## Regenerar
 
@@ -77,6 +93,7 @@ Con `uv`:
 
 ```bash
 uv run scripts/data_viz/ine_price_changes_spain.py
+uv run scripts/data_viz/international_purchasing_power.py
 ```
 
-El script escribe los artefactos en `outputs/ine-price-changes-spain/`.
+Los scripts escriben los artefactos en `outputs/ine-price-changes-spain/` y `outputs/international-purchasing-power/`.

@@ -1,0 +1,6 @@
+country,country_code,year,median_eur_ppa,mean_eur_ppa,p10_eur_ppa,p90_eur_ppa,pct_above_spain_median,spain_median_reference_eur_ppa,ppp_eur_factor_lcu_per_eur,data_quality
+Suiza,CH,2024,58605.3,61701.9,21022.6,94616.8,83.7,32380.4,1.435376,1
+Reino Unido,GB,2024,37793.1,47291.5,19430.7,71896.1,69.0,32380.4,1.004864,1
+Francia,FR,2024,40317.3,46273.6,20830.0,66749.1,68.7,32380.4,1.002631,4
+EEUU,US,2024,44219.1,62303.1,12828.3,104437.3,67.6,32380.4,1.468374,5
+España,ES,2024,32380.4,37846.0,12457.4,57272.1,50.0,32380.4,0.869603,1

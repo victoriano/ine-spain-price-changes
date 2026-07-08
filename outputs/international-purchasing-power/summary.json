@@ -1,0 +1,67 @@
+[
+  {
+    "country": "Suiza",
+    "country_code": "CH",
+    "year": 2024,
+    "median_eur_ppa": 58605.3,
+    "mean_eur_ppa": 61701.9,
+    "p10_eur_ppa": 21022.6,
+    "p90_eur_ppa": 94616.8,
+    "pct_above_spain_median": 83.7,
+    "spain_median_reference_eur_ppa": 32380.4,
+    "ppp_eur_factor_lcu_per_eur": 1.435376,
+    "data_quality": "1"
+  },
+  {
+    "country": "Reino Unido",
+    "country_code": "GB",
+    "year": 2024,
+    "median_eur_ppa": 37793.1,
+    "mean_eur_ppa": 47291.5,
+    "p10_eur_ppa": 19430.7,
+    "p90_eur_ppa": 71896.1,
+    "pct_above_spain_median": 69.0,
+    "spain_median_reference_eur_ppa": 32380.4,
+    "ppp_eur_factor_lcu_per_eur": 1.004864,
+    "data_quality": "1"
+  },
+  {
+    "country": "Francia",
+    "country_code": "FR",
+    "year": 2024,
+    "median_eur_ppa": 40317.3,
+    "mean_eur_ppa": 46273.6,
+    "p10_eur_ppa": 20830.0,
+    "p90_eur_ppa": 66749.1,
+    "pct_above_spain_median": 68.7,
+    "spain_median_reference_eur_ppa": 32380.4,
+    "ppp_eur_factor_lcu_per_eur": 1.002631,
+    "data_quality": "4"
+  },
+  {
+    "country": "EEUU",
+    "country_code": "US",
+    "year": 2024,
+    "median_eur_ppa": 44219.1,
+    "mean_eur_ppa": 62303.1,
+    "p10_eur_ppa": 12828.3,
+    "p90_eur_ppa": 104437.3,
+    "pct_above_spain_median": 67.6,
+    "spain_median_reference_eur_ppa": 32380.4,
+    "ppp_eur_factor_lcu_per_eur": 1.468374,
+    "data_quality": "5"
+  },
+  {
+    "country": "España",
+    "country_code": "ES",
+    "year": 2024,
+    "median_eur_ppa": 32380.4,
+    "mean_eur_ppa": 37846.0,
+    "p10_eur_ppa": 12457.4,
+    "p90_eur_ppa": 57272.1,
+    "pct_above_spain_median": 50.0,
+    "spain_median_reference_eur_ppa": 32380.4,
+    "ppp_eur_factor_lcu_per_eur": 0.869603,
+    "data_quality": "1"
+  }
+]
