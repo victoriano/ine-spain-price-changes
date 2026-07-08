@@ -18,7 +18,7 @@ Este segundo gráfico divide cada serie de precios por el salario mediano bruto 
 
 ![Poder adquisitivo comparado entre España, Francia, Reino Unido, Suiza y EEUU](outputs/international-purchasing-power/international_purchasing_power.png)
 
-Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. Cada curva muestra qué porcentaje de adultos queda por encima de cada nivel de renta anual equivalente, convertida a euros-PPA mediante paridad de poder adquisitivo. La visualización muestra percentiles `5-99` para evitar el arranque mecánico en `100%` cuando el umbral es casi cero; los CSV conservan `p0-p99`. El panel derecho resume qué porcentaje de cada país supera la mediana española de `2024`.
+Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. Cada curva aproxima qué porcentaje de adultos cae en cada tramo de `5.000` euros-PPA de renta anual equivalente, convertida mediante paridad de poder adquisitivo. El panel derecho resume qué porcentaje de cada país supera la mediana española de `2024`.
 
 No es una distribución de salario bruto. Usa renta nacional post-impuestos por adulto equivalente, que incluye redistribución en especie/gasto público imputado; por eso es más útil para comparar nivel de vida amplio, pero debe leerse con esa cautela.
 
@@ -47,6 +47,7 @@ Estos son los dos gráficos estadounidenses originales usados como inspiración 
 - `outputs/international-purchasing-power/international_purchasing_power.png`: gráfico internacional de poder adquisitivo en euros-PPA.
 - `outputs/international-purchasing-power/international_purchasing_power.svg`: versión vectorial del gráfico internacional.
 - `outputs/international-purchasing-power/international_purchasing_power_thresholds.csv`: umbrales WID por percentil, país y euros-PPA.
+- `outputs/international-purchasing-power/international_purchasing_power_distribution.csv`: distribución aproximada por tramos de 5.000 euros-PPA.
 - `outputs/international-purchasing-power/international_purchasing_power_summary.csv`: resumen por país.
 - `outputs/international-purchasing-power/summary.json`: el mismo resumen internacional en JSON.
 - `references/originals/price-changes-us-original.png`: gráfico estadounidense original de cambios de precios.

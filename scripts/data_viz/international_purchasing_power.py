@@ -51,7 +51,8 @@ WID_YEAR = 2024
 INCOME_VARIABLE = "tdiincj992"
 AVERAGE_VARIABLE = "adiincj992"
 PPP_EUR_VARIABLE = "xlceupi999"
-DISPLAY_MIN_PERCENTILE = 5
+BIN_WIDTH_EUR = 5_000
+PLOT_MAX_EUR = 130_000
 
 
 @dataclass(frozen=True)
@@ -173,6 +174,63 @@ def pct_above_threshold(thresholds_eur: dict[int, float], reference: float) -> f
     raise RuntimeError("Reference threshold could not be interpolated")
 
 
+def cdf_percent(thresholds_eur: dict[int, float], value: float) -> float:
+    pairs = sorted((percentile, income) for percentile, income in thresholds_eur.items() if percentile <= 99)
+    if value <= pairs[0][1]:
+        return 0.0
+    if value >= pairs[-1][1]:
+        return 99.0
+
+    for (p0, v0), (p1, v1) in zip(pairs, pairs[1:]):
+        if v0 <= value <= v1:
+            if math.isclose(v0, v1):
+                return float(p1)
+            return p0 + ((value - v0) / (v1 - v0)) * (p1 - p0)
+
+    return 99.0
+
+
+def smooth_series(values: list[float]) -> list[float]:
+    smoothed = []
+    for index, value in enumerate(values):
+        prev_value = values[index - 1] if index > 0 else value
+        next_value = values[index + 1] if index < len(values) - 1 else value
+        smoothed.append(prev_value * 0.25 + value * 0.5 + next_value * 0.25)
+    return smoothed
+
+
+def build_distribution_rows(country_data: list[dict[str, object]]) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    bin_edges = list(range(0, PLOT_MAX_EUR + BIN_WIDTH_EUR, BIN_WIDTH_EUR))
+    for item in country_data:
+        country: Country = item["country"]
+        thresholds_eur: dict[int, float] = item["thresholds_eur"]
+        raw_values = []
+        bin_specs = []
+        for start, end in zip(bin_edges, bin_edges[1:]):
+            share = max(0.0, cdf_percent(thresholds_eur, end) - cdf_percent(thresholds_eur, start))
+            raw_values.append(share)
+            bin_specs.append((start, end, (start + end) / 2))
+
+        smoothed_values = smooth_series(raw_values)
+        for (start, end, midpoint), raw_share, smoothed_share in zip(bin_specs, raw_values, smoothed_values):
+            rows.append(
+                {
+                    "country": country.label,
+                    "country_code": country.code,
+                    "year": WID_YEAR,
+                    "bin_start_eur_ppa": start,
+                    "bin_end_eur_ppa": end,
+                    "bin_midpoint_eur_ppa": midpoint,
+                    "adults_pct_raw": round(raw_share, 4),
+                    "adults_pct_smoothed": round(smoothed_share, 4),
+                    "bin_width_eur_ppa": BIN_WIDTH_EUR,
+                    "note": "Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.",
+                }
+            )
+    return rows
+
+
 def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
     if not rows:
         return
@@ -215,7 +273,11 @@ def build_summary(country_data: list[dict[str, object]]) -> list[dict[str, objec
     return summary
 
 
-def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, object]]) -> None:
+def plot_chart(
+    country_data: list[dict[str, object]],
+    summary: list[dict[str, object]],
+    distribution_rows: list[dict[str, object]],
+) -> None:
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
@@ -238,15 +300,15 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
 
     spain_median = next(item["median_eur_ppa"] for item in country_data if item["country"].code == "ES")
 
+    distribution_by_country: dict[str, list[dict[str, object]]] = {}
+    for row in distribution_rows:
+        distribution_by_country.setdefault(str(row["country_code"]), []).append(row)
+
     for item in country_data:
         country: Country = item["country"]
-        rows = [
-            row
-            for row in item["threshold_rows"]
-            if int(row["percentile"]) >= DISPLAY_MIN_PERCENTILE
-        ]
-        x = [row["income_eur_ppa"] / 1000 for row in rows]
-        y = [row["adults_above_pct"] for row in rows]
+        rows = distribution_by_country[country.code]
+        x = [float(row["bin_midpoint_eur_ppa"]) / 1000 for row in rows]
+        y = [float(row["adults_pct_smoothed"]) for row in rows]
         ax.plot(
             x,
             y,
@@ -262,7 +324,7 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     ax.axvline(spain_median / 1000, color="#1f252b", linewidth=1.2, alpha=0.78, zorder=2)
     ax.text(
         spain_median / 1000 + 1.4,
-        93,
+        6.0,
         f"Mediana España: {fmt_eur_thousands(float(spain_median))} €-PPA",
         color=text,
         fontsize=9.8,
@@ -270,14 +332,12 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
         ha="left",
         va="center",
     )
-    ax.axhline(50, color="#1f252b", linewidth=1.0, alpha=0.18, zorder=1)
-
-    ax.set_xlim(5, 135)
-    ax.set_ylim(0, 96)
+    ax.set_xlim(0, PLOT_MAX_EUR / 1000)
+    ax.set_ylim(0, 16)
     ax.set_xlabel("Renta anual equivalente, miles de euros-PPA", fontsize=10.5, color=text, labelpad=10)
-    ax.set_ylabel("% de adultos con renta superior", fontsize=10.5, color=text, labelpad=10)
-    ax.set_xticks([10, 20, 40, 60, 80, 100, 120])
-    ax.set_yticks([0, 20, 40, 60, 80, 95])
+    ax.set_ylabel("% de adultos en cada tramo de 5.000 €-PPA", fontsize=10.5, color=text, labelpad=10)
+    ax.set_xticks([0, 20, 40, 60, 80, 100, 120])
+    ax.set_yticks([0, 4, 8, 12, 16])
     ax.yaxis.set_major_formatter(FuncFormatter(lambda value, _pos: f"{value:.0f}%"))
     ax.grid(axis="both", color=grid, linewidth=0.8, alpha=0.85, zorder=0)
     ax.legend(
@@ -290,9 +350,9 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     )
 
     ax.text(
-        7,
-        9,
-        "Más a la derecha = mayor poder adquisitivo\nMás arriba = más población por encima del umbral\nSe omite el tramo p0-p4 para evitar el arranque mecánico en 100%",
+        2,
+        1.0,
+        "Curvas aproximadas con umbrales percentilares WID\nNo es salario bruto ni microdato individual",
         fontsize=9.2,
         color="#777469",
         ha="left",
@@ -353,7 +413,7 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
     fig.text(
         0.055,
         0.917,
-        "Renta post-impuestos nacional por adulto equivalente, convertida a euros-PPA. Adultos, 2024. Percentiles 5-99.",
+        "Distribución aproximada por tramos de 5.000 €-PPA. Renta post-impuestos nacional por adulto equivalente. Adultos, 2024.",
         fontsize=13.2,
         color="#777469",
         fontstyle="italic",
@@ -364,8 +424,8 @@ def plot_chart(country_data: list[dict[str, object]], summary: list[dict[str, ob
         "Fuente: WID.world, descargas bulk por país (ES, FR, GB, CH, US). Variable principal: tdiincj992 "
         "(umbrales de renta nacional post-impuestos, equal-split adults); conversión: xlceupi999 "
         "(moneda local por euro-PPA). Incluye redistribución en especie/gasto público imputado, por lo que "
-        "no equivale a salario bruto ni a renta disponible estricta de caja. Se visualizan percentiles 5-99 "
-        "para evitar que el umbral cero domine la lectura; los CSV conservan p0-p99. Repo: "
+        "no equivale a salario bruto ni a renta disponible estricta de caja. La curva principal estima una "
+        "distribución por tramos desde umbrales percentilares; el top 1% es abierto. Repo: "
         "github.com/victoriano/ine-spain-price-changes."
     )
     fig.text(0.055, 0.047, textwrap.fill(footnote, 165), fontsize=8.2, color="#777469", ha="left")
@@ -415,7 +475,7 @@ Referencia: mediana española de `{WID_YEAR}`, `{fmt_spanish_integer(next(row['s
 - Fuente: WID.world bulk downloads por país.
 - Variable de renta: `tdiincj992`, umbral de renta nacional post-impuestos por percentil, adultos `equal-split`.
 - Conversión a euros-PPA: cada umbral local se divide por `xlceupi999`, el factor de moneda local por euro-PPA.
-- El panel principal muestra, para cada nivel del eje X, qué porcentaje de adultos queda por encima de ese poder adquisitivo. Visualmente se muestran los percentiles 5-99 para evitar que el umbral cero genere un arranque mecánico en 100%; los CSV conservan p0-p99.
+- El panel principal aproxima una distribución: qué porcentaje de adultos cae en cada tramo de 5.000 euros-PPA. Se calcula interpolando los umbrales percentilares de WID, no con microdatos individuales.
 - El panel derecho resume qué porcentaje de cada país supera la mediana española.
 
 Esta no es una distribución de salario bruto. Es una métrica más amplia de nivel de vida porque incluye redistribución en especie/gasto público imputado dentro de la renta nacional post-impuestos. WID tiene también `cainc` para renta disponible post-impuestos estricta, pero en la descarga actual no ofrece umbrales/promedios con granularidad suficiente para construir este gráfico comparable.
@@ -425,6 +485,7 @@ Esta no es una distribución de salario bruto. Es una métrica más amplia de ni
 - `international_purchasing_power.png`: gráfico final en PNG.
 - `international_purchasing_power.svg`: versión vectorial.
 - `international_purchasing_power_thresholds.csv`: umbrales por percentil, país y euros-PPA.
+- `international_purchasing_power_distribution.csv`: distribución aproximada por tramos de 5.000 euros-PPA.
 - `international_purchasing_power_summary.csv`: resumen por país.
 - `summary.json`: resumen en JSON.
 """
@@ -440,12 +501,14 @@ def main() -> None:
         for row in country_item["threshold_rows"]
     ]
     summary = build_summary(country_data)
+    distribution_rows = build_distribution_rows(country_data)
 
     write_csv(OUT_DIR / "international_purchasing_power_thresholds.csv", threshold_rows)
+    write_csv(OUT_DIR / "international_purchasing_power_distribution.csv", distribution_rows)
     write_csv(OUT_DIR / "international_purchasing_power_summary.csv", summary)
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     write_readme(summary)
-    plot_chart(country_data, summary)
+    plot_chart(country_data, summary, distribution_rows)
 
 
 if __name__ == "__main__":
