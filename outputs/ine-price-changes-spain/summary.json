@@ -132,6 +132,17 @@
     "note": ""
   },
   {
+    "series": "Compra de vivienda",
+    "base_period": "2007",
+    "end_period": "2025",
+    "base_value": 149.599,
+    "end_value": 179.905,
+    "pct_change": 20.3,
+    "source_table": 25173,
+    "ine_category": "Nacional, General, Media anual",
+    "note": "Indice de Precios de Vivienda; compra de vivienda nueva y segunda mano. No incluye entrada, intereses ni coste financiero."
+  },
+  {
     "series": "Servicios móviles",
     "base_period": "2017",
     "end_period": "2025",

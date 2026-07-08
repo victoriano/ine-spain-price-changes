@@ -6,7 +6,7 @@ Recreación para España del gráfico de cambios acumulados de precios de bienes
 
 ![Cambios de precios en España, medias anuales con referencia a la pandemia de 2020](outputs/ine-price-changes-spain/ine_spain_price_changes.png)
 
-Última versión del gráfico: medias anuales `2002-2025`, referencia vertical en `2020`, fuente INE, URL del repo y autoría de Victoriano Izquierdo / `@victorianoi`.
+Última versión del gráfico: medias anuales `2002-2025`, referencia vertical en `2020`, fuente INE, línea de `Compra de vivienda` con el IPV, URL del repo y autoría de Victoriano Izquierdo / `@victorianoi`.
 
 ## Asequibilidad ajustada por salarios
 
@@ -50,7 +50,7 @@ El eje incluye una referencia vertical gris en `2020` para situar la pandemia.
 
 El gráfico de asequibilidad usa la fórmula `precio normalizado / salario mediano normalizado - 1`, con escala logarítmica para comparar mejor tanto las caídas fuertes como las subidas. El denominador es el salario mediano bruto anual de la EAES, no el salario neto después de impuestos.
 
-La vivienda debe leerse con cautela. `Vivienda y suministros` es el grupo del IPC español para vivienda, agua, electricidad, gas y otros combustibles, pero no mide la compra de vivienda en propiedad. Para capturar esa parte, el gráfico de asequibilidad añade `Compra de vivienda` con el Índice de Precios de Vivienda nacional general del INE. Aun así, esa línea mide precios de compraventa, no entrada, principal de hipoteca, tipos de interés ni esfuerzo financiero mensual.
+La vivienda debe leerse con cautela. `Vivienda y suministros` es el grupo del IPC español para vivienda, agua, electricidad, gas y otros combustibles, pero no mide la compra de vivienda en propiedad. Para capturar esa parte, los gráficos añaden `Compra de vivienda` con el Índice de Precios de Vivienda nacional general del INE. Aun así, esa línea mide precios de compraventa, no entrada, principal de hipoteca, tipos de interés ni esfuerzo financiero mensual.
 
 Algunas categorías son equivalentes aproximados de las del gráfico estadounidense original:
 
@@ -59,7 +59,7 @@ Algunas categorías son equivalentes aproximados de las del gráfico estadounide
 - `Equipos audiovisuales` se usa como proxy de TVs.
 - `Equipos informáticos` se usa como proxy de software/equipo informático.
 - `Vivienda y suministros` es el grupo del IPC español; no incluye vivienda en propiedad imputada.
-- `Compra de vivienda` usa el Índice de Precios de Vivienda nacional general del INE; se interpreta con base `2008`, año alto del ciclo inmobiliario.
+- `Compra de vivienda` usa el Índice de Precios de Vivienda nacional general del INE; se interpreta con base `2007` en el primer gráfico y base `2008` en el gráfico de asequibilidad, porque el salario mediano arranca en 2008.
 
 ## Fuentes
 

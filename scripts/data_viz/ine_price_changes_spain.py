@@ -912,15 +912,15 @@ def plot_chart(series_points: dict[str, list[dict[str, object]]], summary_rows: 
     fig.text(
         0.06,
         0.910,
-        "Bienes y servicios seleccionados del IPC del INE, y coste salarial por hora",
+        "Bienes y servicios del IPC, compra de vivienda y coste salarial por hora",
         fontsize=17,
         color="#282b31",
         ha="left",
     )
 
     footnote = (
-        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184) y ETCL "
-        "(tabla 11222). Cada punto es la media anual de la serie mensual o trimestral; "
+        "Fuente: INE, IPC base 2025 (tablas 76125, 79183, 76127, 79184), IPV "
+        "(tabla 25173) y ETCL (tabla 11222). Cada punto es la media anual de la serie mensual, trimestral o anual; "
         "variacion acumulada contra la primera media anual disponible. "
         "Repo: github.com/victoriano/ine-spain-price-changes."
     )
@@ -965,6 +965,7 @@ def write_methodology(path: Path, summary_rows: list[dict[str, object]]) -> None
         "- La linea vertical gris marca 2020 como referencia temporal de la pandemia.",
         "- Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.",
         "- `Compra de vivienda` usa el Indice de Precios de Vivienda nacional general, media anual; mide precio de compraventa, no esfuerzo hipotecario ni coste financiero.",
+        "- `Compra de vivienda` usa base 2007 en el grafico de cambios de precios y base 2008 en el grafico de asequibilidad, porque el salario mediano arranca en 2008.",
         "- El grafico de asequibilidad divide cada serie de precios por el salario mediano bruto anual: `precio normalizado / salario mediano normalizado - 1`.",
         "- El grafico de asequibilidad no ajusta por impuestos; la mediana salarial de la EAES es bruta.",
         "",
@@ -1001,8 +1002,9 @@ def main() -> None:
     for defn in CPI_SERIES:
         series_points[defn.label] = load_cpi_series(defn, cache)
     series_points["Coste salarial por hora"] = load_wage_series(cache)
-    median_wage_points = load_median_wage_series(cache)
     home_purchase_points = load_home_purchase_series(cache)
+    series_points["Compra de vivienda"] = home_purchase_points
+    median_wage_points = load_median_wage_series(cache)
 
     all_rows = [point for points in series_points.values() for point in points]
     write_csv(OUT_DIR / "ine_spain_price_changes_series.csv", all_rows)
@@ -1016,8 +1018,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    affordability_series_points = {**series_points, "Compra de vivienda": home_purchase_points}
-    affordability_points = build_affordability_series(affordability_series_points, median_wage_points)
+    affordability_points = build_affordability_series(series_points, median_wage_points)
     affordability_rows = [point for points in affordability_points.values() for point in points]
     write_affordability_csv(OUT_DIR / "ine_spain_affordability_wages_series.csv", affordability_rows)
     affordability_summary_rows = write_affordability_summary(

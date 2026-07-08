@@ -14,6 +14,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 - La linea vertical gris marca 2020 como referencia temporal de la pandemia.
 - Vivienda en IPC espanol no incluye vivienda en propiedad imputada; se usa el grupo de vivienda, agua, electricidad, gas y otros combustibles.
 - `Compra de vivienda` usa el Indice de Precios de Vivienda nacional general, media anual; mide precio de compraventa, no esfuerzo hipotecario ni coste financiero.
+- `Compra de vivienda` usa base 2007 en el grafico de cambios de precios y base 2008 en el grafico de asequibilidad, porque el salario mediano arranca en 2008.
 - El grafico de asequibilidad divide cada serie de precios por el salario mediano bruto anual: `precio normalizado / salario mediano normalizado - 1`.
 - El grafico de asequibilidad no ajusta por impuestos; la mediana salarial de la EAES es bruta.
 
@@ -43,6 +44,7 @@ Recreacion del grafico de cambios acumulados de precios, adaptada a Espana.
 | Muebles y hogar | 2002 | 2025 | +37.4% | 05 Muebles, artículos del hogar y artículos para el mantenimiento corriente del hogar |  |
 | Hospitalarios | 2002 | 2025 | +34.5% | 06.3 Servicios de cuidados hospitalarios |  |
 | Vestido y calzado | 2002 | 2025 | +22.1% | 03 Vestido y calzado |  |
+| Compra de vivienda | 2007 | 2025 | +20.3% | Nacional, General, Media anual | Indice de Precios de Vivienda; compra de vivienda nueva y segunda mano. No incluye entrada, intereses ni coste financiero. |
 | Servicios móviles | 2017 | 2025 | -13.2% | 08.3.2.0 Servicios de comunicación móvil | Disponible desde 2017; porcentaje acumulado desde esa media anual. |
 | Juguetes | 2002 | 2025 | -38.0% | 09.2.1 Juegos, juguetes y artículos relacionados con las aficiones  |  |
 | Equipos audiovisuales | 2002 | 2025 | -80.8% | 08.1.4.0 Equipo para la recepción, grabación y reproducción de sonido e imagen | Proxy de TVs. |
