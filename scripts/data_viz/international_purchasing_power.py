@@ -52,7 +52,7 @@ INCOME_VARIABLE = "tdiincj992"
 AVERAGE_VARIABLE = "adiincj992"
 PPP_EUR_VARIABLE = "xlceupi999"
 BIN_WIDTH_EUR = 5_000
-PLOT_MAX_EUR = 130_000
+PLOT_MAX_EUR = 120_000
 
 
 @dataclass(frozen=True)
@@ -138,6 +138,7 @@ def load_country(country: Country) -> dict[str, object]:
                 "income_local": income_local,
                 "ppp_eur_factor_lcu_per_eur": ppp_factor,
                 "income_eur_ppa": income_eur_ppa,
+                "income_spain_eur_equivalent": income_eur_ppa,
                 "data_quality": data_quality,
             }
         )
@@ -149,11 +150,33 @@ def load_country(country: Country) -> dict[str, object]:
         "thresholds_eur": thresholds_eur,
         "median_eur_ppa": thresholds_eur[50],
         "mean_eur_ppa": mean_local / ppp_factor,
+        "mean_spain_eur_equivalent": mean_local / ppp_factor,
         "p10_eur_ppa": thresholds_eur[10],
         "p90_eur_ppa": thresholds_eur[90],
+        "spain_ppp_eur_factor_lcu_per_eur": "",
         "ppp_factor": ppp_factor,
         "data_quality": data_quality,
     }
+
+
+def apply_spain_numeraire(country_data: list[dict[str, object]]) -> None:
+    spain = next(item for item in country_data if item["country"].code == "ES")
+    spain_ppp_factor = float(spain["ppp_factor"])
+    for item in country_data:
+        thresholds_eur: dict[int, float] = item["thresholds_eur"]
+        thresholds_spain_eur = {
+            percentile: value * spain_ppp_factor
+            for percentile, value in thresholds_eur.items()
+        }
+        for row in item["threshold_rows"]:
+            row["spain_ppp_eur_factor_lcu_per_eur"] = spain_ppp_factor
+            row["income_spain_eur_equivalent"] = float(row["income_eur_ppa"]) * spain_ppp_factor
+        item["thresholds_spain_eur"] = thresholds_spain_eur
+        item["median_spain_eur_equivalent"] = thresholds_spain_eur[50]
+        item["mean_spain_eur_equivalent"] = float(item["mean_eur_ppa"]) * spain_ppp_factor
+        item["p10_spain_eur_equivalent"] = thresholds_spain_eur[10]
+        item["p90_spain_eur_equivalent"] = thresholds_spain_eur[90]
+        item["spain_ppp_eur_factor_lcu_per_eur"] = spain_ppp_factor
 
 
 def pct_above_threshold(thresholds_eur: dict[int, float], reference: float) -> float:
@@ -204,7 +227,7 @@ def build_distribution_rows(country_data: list[dict[str, object]]) -> list[dict[
     bin_edges = list(range(0, PLOT_MAX_EUR + BIN_WIDTH_EUR, BIN_WIDTH_EUR))
     for item in country_data:
         country: Country = item["country"]
-        thresholds_eur: dict[int, float] = item["thresholds_eur"]
+        thresholds_eur: dict[int, float] = item["thresholds_spain_eur"]
         raw_values = []
         bin_specs = []
         for start, end in zip(bin_edges, bin_edges[1:]):
@@ -219,12 +242,12 @@ def build_distribution_rows(country_data: list[dict[str, object]]) -> list[dict[
                     "country": country.label,
                     "country_code": country.code,
                     "year": WID_YEAR,
-                    "bin_start_eur_ppa": start,
-                    "bin_end_eur_ppa": end,
-                    "bin_midpoint_eur_ppa": midpoint,
+                    "bin_start_spain_eur_equivalent": start,
+                    "bin_end_spain_eur_equivalent": end,
+                    "bin_midpoint_spain_eur_equivalent": midpoint,
                     "adults_pct_raw": round(raw_share, 4),
                     "adults_pct_smoothed": round(smoothed_share, 4),
-                    "bin_width_eur_ppa": BIN_WIDTH_EUR,
+                    "bin_width_spain_eur_equivalent": BIN_WIDTH_EUR,
                     "note": "Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.",
                 }
             )
@@ -249,23 +272,28 @@ def fmt_spanish_integer(value: float) -> str:
 
 
 def build_summary(country_data: list[dict[str, object]]) -> list[dict[str, object]]:
-    spain_median = next(item["median_eur_ppa"] for item in country_data if item["country"].code == "ES")
+    spain_median = next(
+        item["median_spain_eur_equivalent"]
+        for item in country_data
+        if item["country"].code == "ES"
+    )
     summary = []
     for item in country_data:
         country = item["country"]
-        percent_above_spain = pct_above_threshold(item["thresholds_eur"], float(spain_median))
+        percent_above_spain = pct_above_threshold(item["thresholds_spain_eur"], float(spain_median))
         summary.append(
             {
                 "country": country.label,
                 "country_code": country.code,
                 "year": WID_YEAR,
-                "median_eur_ppa": round(float(item["median_eur_ppa"]), 1),
-                "mean_eur_ppa": round(float(item["mean_eur_ppa"]), 1),
-                "p10_eur_ppa": round(float(item["p10_eur_ppa"]), 1),
-                "p90_eur_ppa": round(float(item["p90_eur_ppa"]), 1),
+                "median_spain_eur_equivalent": round(float(item["median_spain_eur_equivalent"]), 1),
+                "mean_spain_eur_equivalent": round(float(item["mean_spain_eur_equivalent"]), 1),
+                "p10_spain_eur_equivalent": round(float(item["p10_spain_eur_equivalent"]), 1),
+                "p90_spain_eur_equivalent": round(float(item["p90_spain_eur_equivalent"]), 1),
                 "pct_above_spain_median": round(percent_above_spain, 1),
-                "spain_median_reference_eur_ppa": round(float(spain_median), 1),
+                "spain_median_reference_eur": round(float(spain_median), 1),
                 "ppp_eur_factor_lcu_per_eur": round(float(item["ppp_factor"]), 6),
+                "spain_ppp_eur_factor_lcu_per_eur": round(float(item["spain_ppp_eur_factor_lcu_per_eur"]), 6),
                 "data_quality": item["data_quality"],
             }
         )
@@ -298,7 +326,11 @@ def plot_chart(
     ax.set_facecolor(bg)
     ax_bar.set_facecolor(bg)
 
-    spain_median = next(item["median_eur_ppa"] for item in country_data if item["country"].code == "ES")
+    spain_median = next(
+        item["median_spain_eur_equivalent"]
+        for item in country_data
+        if item["country"].code == "ES"
+    )
 
     distribution_by_country: dict[str, list[dict[str, object]]] = {}
     for row in distribution_rows:
@@ -307,7 +339,7 @@ def plot_chart(
     for item in country_data:
         country: Country = item["country"]
         rows = distribution_by_country[country.code]
-        x = [float(row["bin_midpoint_eur_ppa"]) / 1000 for row in rows]
+        x = [float(row["bin_midpoint_spain_eur_equivalent"]) / 1000 for row in rows]
         y = [float(row["adults_pct_smoothed"]) for row in rows]
         ax.plot(
             x,
@@ -325,7 +357,7 @@ def plot_chart(
     ax.text(
         spain_median / 1000 + 1.4,
         6.0,
-        f"Mediana España: {fmt_eur_thousands(float(spain_median))} €-PPA",
+        f"Mediana España: {fmt_eur_thousands(float(spain_median))} €",
         color=text,
         fontsize=9.8,
         fontweight="bold",
@@ -333,9 +365,9 @@ def plot_chart(
         va="center",
     )
     ax.set_xlim(0, PLOT_MAX_EUR / 1000)
-    ax.set_ylim(0, 16)
-    ax.set_xlabel("Renta anual equivalente, miles de euros-PPA", fontsize=10.5, color=text, labelpad=10)
-    ax.set_ylabel("% de adultos en cada tramo de 5.000 €-PPA", fontsize=10.5, color=text, labelpad=10)
+    ax.set_ylim(0, 17.5)
+    ax.set_xlabel("Renta anual equivalente, miles de euros con poder de compra en España", fontsize=10.5, color=text, labelpad=10)
+    ax.set_ylabel("% de adultos en cada tramo de 5.000 € equivalentes en España", fontsize=10.5, color=text, labelpad=10)
     ax.set_xticks([0, 20, 40, 60, 80, 100, 120])
     ax.set_yticks([0, 4, 8, 12, 16])
     ax.yaxis.set_major_formatter(FuncFormatter(lambda value, _pos: f"{value:.0f}%"))
@@ -413,7 +445,7 @@ def plot_chart(
     fig.text(
         0.055,
         0.917,
-        "Distribución aproximada por tramos de 5.000 €-PPA. Renta post-impuestos nacional por adulto equivalente. Adultos, 2024.",
+        "Distribución aproximada por tramos de 5.000 € equivalentes en España. Renta post-impuestos por adulto equivalente. 2024.",
         fontsize=13.2,
         color="#777469",
         fontstyle="italic",
@@ -423,7 +455,8 @@ def plot_chart(
     footnote = (
         "Fuente: WID.world, descargas bulk por país (ES, FR, GB, CH, US). Variable principal: tdiincj992 "
         "(umbrales de renta nacional post-impuestos, equal-split adults); conversión: xlceupi999 "
-        "(moneda local por euro-PPA). Incluye redistribución en especie/gasto público imputado, por lo que "
+        "(moneda local por euro-PPA), reescalada con España como numeraire para que los euros españoles "
+        "queden en euros nominales reales. Incluye redistribución en especie/gasto público imputado, por lo que "
         "no equivale a salario bruto ni a renta disponible estricta de caja. La curva principal estima una "
         "distribución por tramos desde umbrales percentilares; el top 1% es abierto. Repo: "
         "github.com/victoriano/ine-spain-price-changes."
@@ -450,23 +483,23 @@ def write_readme(summary: list[dict[str, object]]) -> None:
     rows = "\n".join(
         "| {country} | {median:,.0f} | {mean:,.0f} | {above:.1f}% |".format(
             country=row["country"],
-            median=row["median_eur_ppa"],
-            mean=row["mean_eur_ppa"],
+            median=row["median_spain_eur_equivalent"],
+            mean=row["mean_spain_eur_equivalent"],
             above=row["pct_above_spain_median"],
         ).replace(",", ".")
         for row in summary
     )
     readme = f"""# Poder adquisitivo internacional
 
-Comparación de España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. La renta se convierte a euros ajustados por paridad de poder adquisitivo (euros-PPA), no por tipo de cambio de mercado.
+Comparación de España, Francia, Reino Unido, Suiza y EEUU con datos de WID.world. La renta se convierte a euros equivalentes de poder de compra en España: España queda en euros nominales reales y el resto de países se reescala por PPP.
 
 ![Poder adquisitivo comparado](international_purchasing_power.png)
 
 ## Resumen
 
-Referencia: mediana española de `{WID_YEAR}`, `{fmt_spanish_integer(next(row['spain_median_reference_eur_ppa'] for row in summary))}` euros-PPA por adulto equivalente.
+Referencia: mediana española de `{WID_YEAR}`, `{fmt_spanish_integer(next(row['spain_median_reference_eur'] for row in summary))}` euros reales por adulto equivalente.
 
-| País | Mediana €-PPA | Media €-PPA | % por encima de la mediana española |
+| País | Mediana equivalente en España | Media equivalente en España | % por encima de la mediana española |
 | --- | ---: | ---: | ---: |
 {rows}
 
@@ -474,8 +507,8 @@ Referencia: mediana española de `{WID_YEAR}`, `{fmt_spanish_integer(next(row['s
 
 - Fuente: WID.world bulk downloads por país.
 - Variable de renta: `tdiincj992`, umbral de renta nacional post-impuestos por percentil, adultos `equal-split`.
-- Conversión a euros-PPA: cada umbral local se divide por `xlceupi999`, el factor de moneda local por euro-PPA.
-- El panel principal aproxima una distribución: qué porcentaje de adultos cae en cada tramo de 5.000 euros-PPA. Se calcula interpolando los umbrales percentilares de WID, no con microdatos individuales.
+- Conversión a euros equivalentes en España: cada umbral local se divide por `xlceupi999`, y luego se multiplica por el factor PPP de España en el mismo año. Así España se mantiene en euros nominales reales.
+- El panel principal aproxima una distribución: qué porcentaje de adultos cae en cada tramo de 5.000 euros equivalentes en España. Se calcula interpolando los umbrales percentilares de WID, no con microdatos individuales.
 - El panel derecho resume qué porcentaje de cada país supera la mediana española.
 
 Esta no es una distribución de salario bruto. Es una métrica más amplia de nivel de vida porque incluye redistribución en especie/gasto público imputado dentro de la renta nacional post-impuestos. WID tiene también `cainc` para renta disponible post-impuestos estricta, pero en la descarga actual no ofrece umbrales/promedios con granularidad suficiente para construir este gráfico comparable.
@@ -484,8 +517,8 @@ Esta no es una distribución de salario bruto. Es una métrica más amplia de ni
 
 - `international_purchasing_power.png`: gráfico final en PNG.
 - `international_purchasing_power.svg`: versión vectorial.
-- `international_purchasing_power_thresholds.csv`: umbrales por percentil, país y euros-PPA.
-- `international_purchasing_power_distribution.csv`: distribución aproximada por tramos de 5.000 euros-PPA.
+- `international_purchasing_power_thresholds.csv`: umbrales por percentil, país, euros-PPA y euros equivalentes en España.
+- `international_purchasing_power_distribution.csv`: distribución aproximada por tramos de 5.000 euros equivalentes en España.
 - `international_purchasing_power_summary.csv`: resumen por país.
 - `summary.json`: resumen en JSON.
 """
@@ -495,6 +528,7 @@ Esta no es una distribución de salario bruto. Es una métrica más amplia de ni
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     country_data = [load_country(country) for country in COUNTRIES]
+    apply_spain_numeraire(country_data)
     threshold_rows = [
         row
         for country_item in country_data

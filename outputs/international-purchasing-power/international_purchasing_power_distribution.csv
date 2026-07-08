@@ -1,131 +1,121 @@
-country,country_code,year,bin_start_eur_ppa,bin_end_eur_ppa,bin_midpoint_eur_ppa,adults_pct_raw,adults_pct_smoothed,bin_width_eur_ppa,note
-España,ES,2024,0,5000,2500.0,0.5661,2.0333,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,5000,10000,7500.0,6.4351,4.8606,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,10000,15000,12500.0,6.0061,6.0318,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,15000,20000,17500.0,5.6799,8.1231,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,20000,25000,22500.0,15.1265,11.8187,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,25000,30000,27500.0,11.342,12.6891,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,30000,35000,32500.0,12.946,12.0043,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,35000,40000,37500.0,10.7831,10.9095,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,40000,45000,42500.0,9.1259,8.8583,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,45000,50000,47500.0,6.3984,6.6184,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,50000,55000,52500.0,4.551,4.4444,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,55000,60000,57500.0,2.2772,2.7148,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,60000,65000,62500.0,1.7538,1.7451,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,65000,70000,67500.0,1.1957,1.2626,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,70000,75000,72500.0,0.9053,0.9215,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,75000,80000,77500.0,0.6795,0.6961,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,80000,85000,82500.0,0.5201,0.5398,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,85000,90000,87500.0,0.4394,0.4394,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,90000,95000,92500.0,0.3585,0.3469,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,95000,100000,97500.0,0.2309,0.2628,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,100000,105000,102500.0,0.2309,0.2309,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,105000,110000,107500.0,0.2309,0.2301,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,110000,115000,112500.0,0.2275,0.2141,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,115000,120000,117500.0,0.1707,0.1849,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,120000,125000,122500.0,0.1707,0.1707,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-España,ES,2024,125000,130000,127500.0,0.1707,0.1707,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,0,5000,2500.0,0.2818,0.2818,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,5000,10000,7500.0,0.2818,0.2818,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,10000,15000,12500.0,0.2818,2.2623,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,15000,20000,17500.0,8.2035,5.6855,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,20000,25000,22500.0,6.053,7.8147,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,25000,30000,27500.0,10.9494,9.8107,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,30000,35000,32500.0,11.2911,11.3949,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,35000,40000,37500.0,12.0479,10.8224,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,40000,45000,42500.0,7.9025,9.7995,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,45000,50000,47500.0,11.345,9.8886,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,50000,55000,52500.0,8.9619,8.8917,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,55000,60000,57500.0,6.2979,6.483,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,60000,65000,62500.0,4.3745,4.7921,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,65000,70000,67500.0,4.1217,3.6244,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,70000,75000,72500.0,1.8797,2.1313,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,75000,80000,77500.0,0.644,0.9006,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,80000,85000,82500.0,0.4349,0.4795,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,85000,90000,87500.0,0.4042,0.4315,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,90000,95000,92500.0,0.4829,0.493,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,95000,100000,97500.0,0.6019,0.5278,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,100000,105000,102500.0,0.4244,0.4529,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,105000,110000,107500.0,0.3609,0.3768,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,110000,115000,112500.0,0.3609,0.3179,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,115000,120000,117500.0,0.1889,0.2304,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,120000,125000,122500.0,0.1828,0.1843,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Francia,FR,2024,125000,130000,127500.0,0.1828,0.1828,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,0,5000,2500.0,0.3347,0.3347,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,5000,10000,7500.0,0.3347,1.1261,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,10000,15000,12500.0,3.5002,3.424,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,15000,20000,17500.0,6.3608,5.2699,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,20000,25000,22500.0,4.8577,5.7481,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,25000,30000,27500.0,6.9162,9.3903,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,30000,35000,32500.0,18.8713,14.8417,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,35000,40000,37500.0,14.7082,14.2642,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,40000,45000,42500.0,8.769,10.2996,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,45000,50000,47500.0,8.9524,8.1341,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,50000,55000,52500.0,5.8628,6.2168,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,55000,60000,57500.0,4.189,4.2857,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,60000,65000,62500.0,2.9018,3.1997,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,65000,70000,67500.0,2.8063,2.5192,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,70000,75000,72500.0,1.5626,1.8612,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,75000,80000,77500.0,1.5133,1.4218,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,80000,85000,82500.0,1.0978,1.1378,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,85000,90000,87500.0,0.8423,0.8694,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,90000,95000,92500.0,0.6954,0.6887,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,95000,100000,97500.0,0.5216,0.5544,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,100000,105000,102500.0,0.4789,0.4537,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,105000,110000,107500.0,0.3355,0.3714,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,110000,115000,112500.0,0.3355,0.3275,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,115000,120000,117500.0,0.3035,0.2874,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,120000,125000,122500.0,0.2069,0.231,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Reino Unido,GB,2024,125000,130000,127500.0,0.2069,0.2069,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,0,5000,2500.0,0.3842,0.3842,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,5000,10000,7500.0,0.3842,1.6934,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,10000,15000,12500.0,5.6211,3.6665,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,15000,20000,17500.0,3.0398,3.6372,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,20000,25000,22500.0,2.8481,2.8938,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,25000,30000,27500.0,2.8391,2.7457,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,30000,35000,32500.0,2.4566,2.627,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,35000,40000,37500.0,2.7555,3.482,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,40000,45000,42500.0,5.9603,5.8216,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,45000,50000,47500.0,8.6101,7.9444,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,50000,55000,52500.0,8.5973,8.9274,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,55000,60000,57500.0,9.9047,9.623,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,60000,65000,62500.0,10.0854,9.6986,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,65000,70000,67500.0,8.7188,8.5455,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,70000,75000,72500.0,6.659,6.6897,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,75000,80000,77500.0,4.7221,4.6655,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,80000,85000,82500.0,2.5587,2.9278,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,85000,90000,87500.0,1.8716,2.1188,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,90000,95000,92500.0,2.1733,2.1356,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,95000,100000,97500.0,2.3241,2.0942,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,100000,105000,102500.0,1.5554,1.6106,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,105000,110000,107500.0,1.0074,1.0933,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,110000,115000,112500.0,0.8029,0.7945,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,115000,120000,117500.0,0.565,0.614,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,120000,125000,122500.0,0.523,0.4619,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-Suiza,CH,2024,125000,130000,127500.0,0.2366,0.3082,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,0,5000,2500.0,4.6091,4.354,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,5000,10000,7500.0,3.5885,3.7373,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,10000,15000,12500.0,3.163,3.3226,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,15000,20000,17500.0,3.376,3.7185,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,20000,25000,22500.0,4.9588,5.6684,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,25000,30000,27500.0,9.3799,7.6476,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,30000,35000,32500.0,6.8719,7.7198,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,35000,40000,37500.0,7.7557,7.4248,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,40000,45000,42500.0,7.3159,7.13,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,45000,50000,47500.0,6.1325,6.396,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,50000,55000,52500.0,6.003,5.8613,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,55000,60000,57500.0,5.3068,5.2245,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,60000,65000,62500.0,4.2813,4.3561,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,65000,70000,67500.0,3.555,3.6076,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,70000,75000,72500.0,3.0391,3.0625,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,75000,80000,77500.0,2.6169,2.6233,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,80000,85000,82500.0,2.2205,2.2356,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,85000,90000,87500.0,1.8847,1.8913,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,90000,95000,92500.0,1.5755,1.5965,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,95000,100000,97500.0,1.3502,1.3505,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,100000,105000,102500.0,1.126,1.1423,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,105000,110000,107500.0,0.9668,0.9716,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,110000,115000,112500.0,0.8267,0.8293,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,115000,120000,117500.0,0.6968,0.7107,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,120000,125000,122500.0,0.6225,0.6207,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
-EEUU,US,2024,125000,130000,127500.0,0.5411,0.5615,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+country,country_code,year,bin_start_spain_eur_equivalent,bin_end_spain_eur_equivalent,bin_midpoint_spain_eur_equivalent,adults_pct_raw,adults_pct_smoothed,bin_width_spain_eur_equivalent,note
+España,ES,2024,0,5000,2500.0,0.6509,2.5548,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,5000,10000,7500.0,8.2665,5.9679,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,10000,15000,12500.0,6.6877,7.4772,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,15000,20000,17500.0,8.267,10.1605,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,20000,25000,22500.0,17.4204,14.1256,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,25000,30000,27500.0,13.3945,14.774,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,30000,35000,32500.0,14.8865,13.1694,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,35000,40000,37500.0,9.5102,10.3944,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,40000,45000,42500.0,7.6707,7.0507,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,45000,50000,47500.0,3.3514,4.1738,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,50000,55000,52500.0,2.3219,2.3912,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,55000,60000,57500.0,1.5697,1.6304,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,60000,65000,62500.0,1.0602,1.1179,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,65000,70000,67500.0,0.7814,0.7963,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,70000,75000,72500.0,0.5622,0.6028,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,75000,80000,77500.0,0.5053,0.4707,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,80000,85000,82500.0,0.31,0.3477,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,85000,90000,87500.0,0.2656,0.2767,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,90000,95000,92500.0,0.2656,0.2647,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,95000,100000,97500.0,0.2622,0.2465,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,100000,105000,102500.0,0.1963,0.2128,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,105000,110000,107500.0,0.1963,0.1963,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,110000,115000,112500.0,0.1963,0.1963,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+España,ES,2024,115000,120000,117500.0,0.1963,0.1963,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,0,5000,2500.0,0.3241,0.3241,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,5000,10000,7500.0,0.3241,0.3241,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,10000,15000,12500.0,0.3241,3.1735,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,15000,20000,17500.0,11.7215,7.7431,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,20000,25000,22500.0,7.2053,10.4727,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,25000,30000,27500.0,15.7586,13.233,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,30000,35000,32500.0,14.2095,13.3911,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,35000,40000,37500.0,9.387,11.2577,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,40000,45000,42500.0,12.0474,11.1145,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,45000,50000,47500.0,10.9764,9.394,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,50000,55000,52500.0,3.5757,5.963,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,55000,60000,57500.0,5.7243,4.4218,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,60000,65000,62500.0,2.6629,2.9477,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,65000,70000,67500.0,0.7406,1.1539,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,70000,75000,72500.0,0.4717,0.5372,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,75000,80000,77500.0,0.4648,0.5133,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,80000,85000,82500.0,0.652,0.589,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,85000,90000,87500.0,0.5872,0.5604,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,90000,95000,92500.0,0.415,0.4581,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,95000,100000,97500.0,0.415,0.3654,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,100000,105000,102500.0,0.2165,0.2645,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,105000,110000,107500.0,0.2102,0.2118,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,110000,115000,112500.0,0.2102,0.2102,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Francia,FR,2024,115000,120000,117500.0,0.2102,0.2102,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,0,5000,2500.0,0.3848,0.3848,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,5000,10000,7500.0,0.3848,2.0761,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,10000,15000,12500.0,7.15,5.0569,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,15000,20000,17500.0,5.5428,6.0379,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,20000,25000,22500.0,5.9162,9.3803,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,25000,30000,27500.0,20.1462,15.7783,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,30000,35000,32500.0,16.9046,16.0341,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,35000,40000,37500.0,10.181,11.6188,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,40000,45000,42500.0,9.2089,8.6436,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,45000,50000,47500.0,5.9758,6.2631,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,50000,55000,52500.0,3.8921,4.2755,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,55000,60000,57500.0,3.3419,3.0997,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,60000,65000,62500.0,1.8228,2.1753,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,65000,70000,67500.0,1.7136,1.6164,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,70000,75000,72500.0,1.2155,1.2585,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,75000,80000,77500.0,0.8896,0.9217,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,80000,85000,82500.0,0.6923,0.7185,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,85000,90000,87500.0,0.5998,0.5728,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,90000,95000,92500.0,0.3992,0.446,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,95000,100000,97500.0,0.3858,0.3764,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,100000,105000,102500.0,0.3347,0.3233,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,105000,110000,107500.0,0.2379,0.2621,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,110000,115000,112500.0,0.2379,0.2379,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Reino Unido,GB,2024,115000,120000,117500.0,0.2379,0.2379,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,0,5000,2500.0,0.4418,0.4418,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,5000,10000,7500.0,0.4418,2.0706,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,10000,15000,12500.0,6.957,4.4085,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,15000,20000,17500.0,3.2781,4.2034,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,20000,25000,22500.0,3.3003,3.1986,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,25000,30000,27500.0,2.9157,3.0887,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,30000,35000,32500.0,3.2231,4.2123,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,35000,40000,37500.0,7.4872,7.0584,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,40000,45000,42500.0,10.0359,9.3507,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,45000,50000,47500.0,9.8438,10.3956,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,50000,55000,52500.0,11.8591,11.131,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,55000,60000,57500.0,10.962,10.4098,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,60000,65000,62500.0,7.8562,7.9937,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,65000,70000,67500.0,5.3004,5.2754,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,70000,75000,72500.0,2.6447,3.261,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,75000,80000,77500.0,2.4543,2.5244,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,80000,85000,82500.0,2.5443,2.4136,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,85000,90000,87500.0,2.1116,2.0133,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,90000,95000,92500.0,1.2859,1.4048,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,95000,100000,97500.0,0.9358,0.9503,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,100000,105000,102500.0,0.6437,0.688,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,105000,110000,107500.0,0.5291,0.488,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,110000,115000,112500.0,0.2504,0.32,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+Suiza,CH,2024,115000,120000,117500.0,0.2504,0.2504,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,0,5000,2500.0,5.2012,4.8914,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,5000,10000,7500.0,3.9619,4.1923,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,10000,15000,12500.0,3.644,3.9377,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,15000,20000,17500.0,4.5009,5.57,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,20000,25000,22500.0,9.6343,8.0236,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,25000,30000,27500.0,8.3247,8.782,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,30000,35000,32500.0,8.844,8.5454,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,35000,40000,37500.0,8.169,8.0418,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,40000,45000,42500.0,6.9854,7.2044,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,45000,50000,47500.0,6.678,6.4345,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,50000,55000,52500.0,5.3964,5.4401,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,55000,60000,57500.0,4.2896,4.3853,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,60000,65000,62500.0,3.5655,3.6032,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,65000,70000,67500.0,2.992,3.0081,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,70000,75000,72500.0,2.4829,2.5012,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,75000,80000,77500.0,2.0469,2.0636,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,80000,85000,82500.0,1.6776,1.6981,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,85000,90000,87500.0,1.3903,1.4042,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,90000,95000,92500.0,1.1587,1.1668,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,95000,100000,97500.0,0.9596,0.9692,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,100000,105000,102500.0,0.7989,0.8101,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,105000,110000,107500.0,0.683,0.6964,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,110000,115000,112500.0,0.6205,0.5995,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
+EEUU,US,2024,115000,120000,117500.0,0.474,0.5106,5000,Estimated from WID percentile thresholds; top 1 percent is open-ended and not fully shown.
