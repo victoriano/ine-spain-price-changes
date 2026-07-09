@@ -22,6 +22,66 @@ Este gráfico compara España, Francia, Reino Unido, Suiza y EEUU con datos de W
 
 No es una distribución de salario bruto. Usa renta nacional post-impuestos por adulto equivalente, que incluye redistribución en especie/gasto público imputado; por eso es más útil para comparar nivel de vida amplio, pero debe leerse con esa cautela.
 
+## Tweets publicados
+
+Estos son los posts de X publicados a partir de los gráficos del repo.
+
+### Cambios de precios en España
+
+[Tweet original](https://x.com/victorianoi/status/2074520158907818265), publicado el `2026-07-07`.
+
+> ¿Qué cosas son ahora muchísimo más caras y más baratas en España que hace 20 años? Recree ese gráfico viral con datos de USA pero con los datos del @es_INE .
+>
+> Coinciden bastante excepto en algunas cosas que no estoy seguro si tiene que ver con cómo se categorizan y miden ciertas cosas en el IPC o porque son intrínsecas al país, como el tema de la Sanidad en USA. Aquí imagino que la educación superior ha crecido tanto ¿por la proliferación de las universidades privadas?
+>
+> Es aluncinante lo de la vivienda, los alimentos y los coches (lo que más afecta a la calidad de vida) cómo se han disparado desde la pandemia. En USA también han crecido mucho pero no parecen tan correlados con la pandemia.
+>
+> El resto de categorías (coches, muebles, vestido y calzado) también son más caros en España que lo son ahora en USA.
+>
+> Sólo la tecnología es más barata hoy día en ambos sitios... Lo que me lleva a tener esperanza que la IA y automatización en nuevas industrias nos pueda conducir a un futuro más próspero que los pasados 20 años
+
+### Asequibilidad ajustada por salario mediano
+
+[Tweet original](https://x.com/victorianoi/status/2074532273366376701), publicado el `2026-07-07`.
+
+> Rehice el gráfico anterior, pero ajustando cada precio por el salario mediano bruto anual en España.
+>
+> La historia cambia bastante: desde 2008, muchas cosas son más asequibles en términos de salario mediano. Tecnología, juguetes, ropa, muebles, servicios móviles e incluso coches pesan menos que antes.
+>
+> Pero no todo mejora: educación superior y alimentos sí son menos asequibles. Y vivienda aparece casi plana, aunque aquí hay una trampa importante: el IPC no mide bien comprar casa. No incluye entrada, hipoteca, tipos de interés ni precio de compraventa.
+>
+> No se ha encarecido “todo”. Se ha encarecido lo que más importa para construir una vida.
+>
+> Repo y metodología:
+> https://github.com/victoriano/ine-spain-price-changes
+
+### Poder adquisitivo comparado
+
+[Tweet original](https://x.com/victorianoi/status/2075180436167258174), publicado el `2026-07-09`.
+
+> ¿Cuánto mejor viven los 🇺🇸 americanos vs europeos ricos 🇨🇭, segunda división europea 🇬🇧🇫🇷 y tercera 🇪🇸🇮🇹 ?
+>
+> Es x4.3 veces más probable tener un salario para vivir bien naciendo en 🇺🇸 USA que en 🇪🇸 España.
+>
+> Si veo un debate recurrente en mi timeline últimamente es el tema del europoors, pero no había visto un buen gráfico para alcanzar a comprender la magnitud. Todos sabemos que hay megaricos en USA y Suiza, UK pero cuánta gente tiene más poder acquisitivo que el español mediano y que el español acomadado (alguien que gane más de 70K en España)
+>
+> Con datos WID 2024, renta post-impuestos por adulto equivalente y coste de vida reescalado a España:
+>
+> 🇨🇭 El 83,7% de los suizos tiene más poder adquisitivo que el español mediano que gana 28K al año.
+> 🇬🇧 Reino Unido 69,0%
+> 🇫🇷 Francia 68,7%
+> 🇺🇸 EEUU 67,6%
+>
+> Y para mí lo más llamativo en realidad no es tanto respecto la mediana, como de ganar más de 70K al año equivalentes a España en poder adquisitivo (que es donde diría que uno puede crear algo de riqueza como para vivir con cierta tranquilidad e independencia) Ahí como se ve en el gráfico caen mucho Francia y UK que no tienen muchísima más gente que España viviendo en ese umbral de confort como sí que tienen EEUU (casi un 20% de su población) y Suiza.
+>
+> 🇺🇸 EEUU - 18%
+> 🇨🇭 Suiza - 16%
+> 🇬🇧 Reino Unido - 7,4%
+> 🇫🇷 Francia - 5%
+> 🇪🇸 España - 4,2%
+>
+> No son salarios brutos. Es nivel de vida comparable.
+
 ## Originales de referencia
 
 Estos son los dos gráficos estadounidenses originales usados como inspiración visual y metodológica.
